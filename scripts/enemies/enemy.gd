@@ -22,6 +22,7 @@ func _ready() -> void:
 	add_to_group("enemies")
 	health = max_health
 	spawn_position = global_position
+	_apply_real_variant()
 	var visual: Node = get_node_or_null("Visual")
 	if visual:
 		if visual.has_method("set_variant"):
