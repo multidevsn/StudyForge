@@ -6,6 +6,7 @@ extends CharacterBody3D
 @export var attack_range := 2.0
 @export var detection_range := 16.0
 @export var enemy_id := ""
+@export var enemy_variant := "goblin"
 
 var health := 60
 var attack_cooldown := 0.0
@@ -19,6 +20,8 @@ func _ready() -> void:
 	spawn_position = global_position
 	var visual: Node = get_node_or_null("Visual")
 	if visual:
+		if visual.has_method("set_variant"):
+			visual.set_variant(enemy_variant)
 		var players := visual.find_children("*", "AnimationPlayer", true, false)
 		if not players.is_empty():
 			animation_player = players[0] as AnimationPlayer
@@ -77,7 +80,7 @@ func _die() -> void:
 	_play_animation(["Death_A", "death", "die"])
 	var audio := get_tree().get_first_node_in_group("audio_manager")
 	if audio: audio.play_sfx("hit")
-	var world := get_parent()
+	var world := get_tree().get_first_node_in_group("world")
 	if world and world.has_method("on_enemy_defeated"):
 		world.on_enemy_defeated(self)
 	queue_free()
