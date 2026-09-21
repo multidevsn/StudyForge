@@ -2,8 +2,9 @@ extends Node3D
 
 @export var world_size := 80.0
 @export var terrain_resolution := 34
-@export var tree_count := 38
-@export var rock_count := 20
+@export var tree_count := 58
+@export var rock_count := 30
+@export var bush_count := 44
 
 var rng := RandomNumberGenerator.new()
 var sun: DirectionalLight3D
@@ -16,6 +17,7 @@ var region_streamer
 var event_manager
 
 func _ready() -> void:
+	add_to_group("world")
 	rng.seed = 777777
 	rpg_system = preload("res://scripts/systems/rpg_system.gd").new()
 	rpg_system.name = "RPGSystem"
@@ -70,11 +72,12 @@ func _build_world() -> void:
 	_make_dungeon()
 	for i in range(tree_count):
 		_spawn_tree(_random_ground_position())
-	for i in range(24):
+	for i in range(bush_count):
 		_spawn_bush(_random_ground_position())
 	for i in range(rock_count):
 		_spawn_rock(_random_ground_position())
 	_make_ruins()
+	_make_population()
 
 func _make_environment() -> void:
 	var env_node := WorldEnvironment.new()
@@ -251,6 +254,11 @@ func _spawn_rock(pos: Vector3) -> void:
 		if node is VisualInstance3D:
 			(node as VisualInstance3D).visibility_range_end = 80.0
 			node.add_to_group("stream_optimized")
+
+func _make_population() -> void:
+	var population := preload("res://scripts/world/population_manager.gd").new()
+	population.name = "PopulationManager"
+	add_child(population)
 
 func _make_ruins() -> void:
 	for p in [Vector3(-30,_height(-30,-25),-25),Vector3(-34,_height(-34,-25),-25),Vector3(-32,_height(-32,-29),-29)]:
