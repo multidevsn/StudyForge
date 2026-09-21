@@ -20,10 +20,13 @@ func _build_village() -> void:
 
 	if house_scenes.is_empty():
 		return
-	var positions := [
+	var positions: Array[Vector3] = [
 		Vector3(-22, 0, -18),
 		Vector3(-22, 0, 4),
-		Vector3(6, 0, -18)
+		Vector3(6, 0, -18),
+		Vector3(18, 0, -4),
+		Vector3(17, 0, 13),
+		Vector3(-24, 0, 18)
 	]
 	for i in range(positions.size()):
 		_make_real_building(positions[i], house_scenes[i % house_scenes.size()])
@@ -32,6 +35,8 @@ func _build_village() -> void:
 	_make_real_building(Vector3(-8, 0, 18), load("res://assets/external/quaternius/village/blacksmith.glb"))
 	_make_real_building(Vector3(7, 0, 15), load("res://assets/external/quaternius/village/market_stand_1.glb"))
 	_make_real_building(Vector3(-1, 0, -1), load("res://assets/external/quaternius/village/well.glb"))
+	_make_real_building(Vector3(20, 0, 6), house_scenes[1])
+	_make_real_building(Vector3(-26, 0, 8), house_scenes[2])
 
 func _make_real_building(pos: Vector3, scene: PackedScene) -> void:
 	if scene == null:
