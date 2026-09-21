@@ -70,7 +70,7 @@ func _load_region(c: Vector2i) -> void:
 		return
 	region.name = "Region_%d_%d" % [c.x, c.y]
 	add_child(region)
-	region.setup(c, region_size, world_seed)
+	region.call("setup", c, region_size, world_seed)
 	loaded_regions[_key(c)] = region
 	discovered_regions[_key(c)] = {"x":c.x, "z":c.y}
 
