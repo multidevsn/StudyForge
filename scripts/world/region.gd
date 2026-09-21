@@ -90,6 +90,7 @@ func _spawn_tree(pos: Vector3) -> void:
 	trunk.material_override = bark
 	trunk.position.y = 1.5
 	trunk.visibility_range_end = region_size * 1.35
+	trunk.add_to_group("stream_optimized")
 	root.add_child(trunk)
 	var crown := MeshInstance3D.new()
 	var sphere := SphereMesh.new()
@@ -101,6 +102,7 @@ func _spawn_tree(pos: Vector3) -> void:
 	crown.material_override = leaves
 	crown.position.y = 3.6
 	crown.visibility_range_end = region_size * 1.35
+	crown.add_to_group("stream_optimized")
 	root.add_child(crown)
 	add_child(root)
 
@@ -113,6 +115,7 @@ func _spawn_rock(pos: Vector3) -> void:
 	rock.position = pos + Vector3.UP * mesh.radius * 0.45
 	rock.scale = Vector3(1.2, 0.7, 0.9)
 	rock.visibility_range_end = region_size * 1.15
+	rock.add_to_group("stream_optimized")
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = Color("#62655d")
 	rock.material_override = mat
