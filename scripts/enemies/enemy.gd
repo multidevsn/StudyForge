@@ -1,5 +1,9 @@
 extends CharacterBody3D
 
+const GOBLIN_SCENE: PackedScene = preload("res://assets/external/quaternius/static_characters/Goblin_static.glb")
+const ORC_SCENE: PackedScene = preload("res://assets/external/quaternius/static_characters/Orc_static.glb")
+const DEMON_SCENE: PackedScene = preload("res://assets/external/quaternius/static_characters/Demon_static.glb")
+
 @export var max_health := 60
 @export var move_speed := 2.6
 @export var attack_damage := 8
@@ -25,6 +29,25 @@ func _ready() -> void:
 		var players := visual.find_children("*", "AnimationPlayer", true, false)
 		if not players.is_empty():
 			animation_player = players[0] as AnimationPlayer
+
+func _apply_real_variant() -> void:
+	var current: Node = get_node_or_null("Visual")
+	var scene: PackedScene = GOBLIN_SCENE
+	if enemy_variant == "orc":
+		scene = ORC_SCENE
+	elif enemy_variant == "demon":
+		scene = DEMON_SCENE
+
+	if current != null:
+		current.free()
+
+	var visual: Node3D = scene.instantiate() as Node3D
+	if visual == null:
+		return
+	visual.name = "Visual"
+	visual.position = Vector3.ZERO
+	visual.scale = Vector3.ONE * (1.0 if enemy_variant == "goblin" else 1.25 if enemy_variant == "orc" else 1.65)
+	add_child(visual)
 
 func _physics_process(delta: float) -> void:
 	attack_cooldown = max(attack_cooldown - delta, 0.0)
