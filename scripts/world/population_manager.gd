@@ -42,9 +42,9 @@ func _spawn_citizen(pos: Vector3, citizen_role: String, skin: Color, outfit: Col
 	citizen.name = "%s_%d" % [citizen_role.capitalize(), get_child_count()]
 	citizen.position = Vector3(pos.x, _height(pos.x, pos.z), pos.z)
 	citizen.set_script(citizen_agent_script)
-	citizen.walk_speed = 1.1 if citizen_role == "guard" else 1.35
-	citizen.patrol_radius = 4.5 if citizen_role == "guard" else 7.0
-	citizen.role = citizen_role
+	citizen.set("walk_speed", 1.1 if citizen_role == "guard" else 1.35)
+	citizen.set("patrol_radius", 4.5 if citizen_role == "guard" else 7.0)
+	citizen.set("role", citizen_role)
 
 	var collider := CollisionShape3D.new()
 	var shape := CapsuleShape3D.new()
@@ -75,10 +75,10 @@ func _spawn_enemy_camps() -> void:
 		var enemy := enemy_scene.instantiate()
 		enemy.name = "Wanderer_%02d" % i
 		enemy.enemy_id = "wanderer_%02d" % i
-		enemy.max_health = 45 + (i % 3) * 15
-		enemy.move_speed = 1.8 + (i % 2) * 0.6
-		enemy.detection_range = 10.0 + (i % 3) * 3.0
-		enemy.enemy_variant = variants[i]
+		enemy.set("max_health", 45 + (i % 3) * 15)
+		enemy.set("move_speed", 1.8 + (i % 2) * 0.6)
+		enemy.set("detection_range", 10.0 + (i % 3) * 3.0)
+		enemy.set("enemy_variant", variants[i])
 		var p: Vector3 = positions[i]
 		enemy.position = Vector3(p.x, _height(p.x, p.z) + 0.05, p.z)
 		add_child(enemy)
