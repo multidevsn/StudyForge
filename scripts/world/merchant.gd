@@ -8,8 +8,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo: return
 	var player: Node3D = get_tree().get_first_node_in_group("player") as Node3D
-	var rpg := get_tree().get_first_node_in_group("rpg_system")
-	var hud := get_tree().get_first_node_in_group("hud")
+	var rpg = get_tree().get_first_node_in_group("rpg_system")
+	var hud = get_tree().get_first_node_in_group("hud")
 	if player == null or rpg == null or hud == null: return
 	if global_position.distance_to(player.global_position) > 3.5:
 		shop_open = false
