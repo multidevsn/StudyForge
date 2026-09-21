@@ -13,6 +13,7 @@ jobs:
   core-tests:
     name: Core tests
     runs-on: macos-15
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,22 +23,34 @@ jobs:
   ios-simulator-build:
     name: Build iOS Simulator app
     runs-on: macos-15
+    timeout-minutes: 15
     needs: core-tests
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Show toolchain
-        run: |
-          xcodebuild -version
-          xcrun simctl list runtimes
+      - name: Show Xcode toolchain
+        run: xcodebuild -version
+      - name: Validate Xcode project
+        run: xcodebuild -project StudyForge.xcodeproj -scheme StudyForge -list
       - name: Build unsigned Simulator app
         run: |
           set -o pipefail
-          xcodebuild             -project StudyForge.xcodeproj             -scheme StudyForge             -configuration Debug             -sdk iphonesimulator             -destination 'generic/platform=iOS Simulator'             -derivedDataPath build             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build | tee xcodebuild.log
+          xcodebuild \
+            -project StudyForge.xcodeproj \
+            -scheme StudyForge \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build | tee xcodebuild.log
       - name: Package Simulator app
         run: |
           mkdir -p artifacts
-          ditto -c -k --sequesterRsrc --keepParent             'build/Build/Products/Debug-iphonesimulator/StudyForge.app'             'artifacts/StudyForge-Simulator.app.zip'
+          ditto -c -k --sequesterRsrc --keepParent \
+            'build/Build/Products/Debug-iphonesimulator/StudyForge.app' \
+            'artifacts/StudyForge-Simulator.app.zip'
           cp xcodebuild.log artifacts/xcodebuild.log
       - name: Upload Simulator artifact
         uses: actions/upload-artifact@v4
