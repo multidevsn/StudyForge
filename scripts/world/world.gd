@@ -139,9 +139,10 @@ func _make_npc() -> void:
 	add_child(npc)
 
 func _make_merchant() -> void:
-	var merchant := preload("res://scenes/world/Merchant.tscn").instantiate()
-	merchant.position = Vector3(-4, _height(-4, -2), -2)
-	add_child(merchant)
+	for p in [Vector3(-4, _height(-4, -2), -2), Vector3(-12, _height(-12, -1), -1)]:
+		var merchant := preload("res://scenes/world/Merchant.tscn").instantiate()
+		merchant.position = p
+		add_child(merchant)
 
 func _make_enemy() -> void:
 	var enemy := preload("res://scenes/enemies/Enemy.tscn").instantiate()
