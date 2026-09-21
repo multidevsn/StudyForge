@@ -256,7 +256,7 @@ func _spawn_rock(pos: Vector3) -> void:
 			node.add_to_group("stream_optimized")
 
 func _make_population() -> void:
-	var population := preload("res://scripts/world/population_manager.gd").new()
+	var population: Node3D = preload("res://scripts/world/population_manager.gd").new() as Node3D
 	population.name = "PopulationManager"
 	add_child(population)
 
