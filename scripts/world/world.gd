@@ -271,6 +271,12 @@ func restore_world_state(data: Dictionary) -> void:
 		event_manager.event_index = int(data.get("event_index", event_manager.event_index))
 	if region_streamer:
 		region_streamer.restore_state(data.get("region_streaming", {}))
+	for enemy in get_tree().get_nodes_in_group("enemies"):
+		if not is_instance_valid(enemy):
+			continue
+		var enemy_id := str(enemy.get("enemy_id"))
+		if enemy_id != "" and defeated_enemy_ids.has(enemy_id):
+			enemy.queue_free()
 
 func save_game() -> void:
 	var player := get_node_or_null("Player")
