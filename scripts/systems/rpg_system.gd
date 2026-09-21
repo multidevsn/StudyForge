@@ -33,7 +33,7 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
-	var hud := get_tree().get_first_node_in_group("hud")
+	var hud = get_tree().get_first_node_in_group("hud")
 	if event.keycode == KEY_I:
 		if hud: hud.show_message(inventory_text())
 	elif event.keycode == KEY_K:
@@ -51,7 +51,7 @@ func add_item(item_id: String, amount: int = 1) -> void:
 	inventory[item_id] = int(inventory.get(item_id, 0)) + amount
 	inventory_changed.emit()
 	_update_player()
-	var audio := get_tree().get_first_node_in_group("audio_manager")
+	var audio = get_tree().get_first_node_in_group("audio_manager")
 	if audio:
 		audio.play_sfx("pickup")
 
@@ -69,7 +69,7 @@ func equip_item(item_id: String) -> bool:
 		return false
 	equipment["weapon"] = item_id
 	_update_player()
-	var hud := get_tree().get_first_node_in_group("hud")
+	var hud = get_tree().get_first_node_in_group("hud")
 	if hud: hud.show_message("Équipé : %s" % item_name(item_id))
 	return true
 
@@ -79,7 +79,7 @@ func add_xp(amount: int) -> void:
 		xp -= xp_to_next_level()
 		level += 1
 		skill_points += 1
-		var hud := get_tree().get_first_node_in_group("hud")
+		var hud = get_tree().get_first_node_in_group("hud")
 		if hud: hud.show_message("NIVEAU %d ! +1 point de compétence." % level)
 	stats_changed.emit()
 	_update_player()
@@ -93,12 +93,12 @@ func spend_skill(skill_id: String) -> bool:
 	skill_points -= 1
 	skills[skill_id] += 1
 	_update_player()
-	var hud := get_tree().get_first_node_in_group("hud")
+	var hud = get_tree().get_first_node_in_group("hud")
 	if hud: hud.show_message("Compétence %s améliorée (%d)." % [skill_id, skills[skill_id]])
 	return true
 
 func _update_player() -> void:
-	var player := get_tree().get_first_node_in_group("player")
+	var player = get_tree().get_first_node_in_group("player")
 	if player == null:
 		return
 	player.max_health = 100 + skills["vitality"] * 15
@@ -129,7 +129,7 @@ func start_quest(id: String) -> void:
 	if not quests.has(id): return
 	quests[id]["started"] = true
 	quest_changed.emit()
-	var hud := get_tree().get_first_node_in_group("hud")
+	var hud = get_tree().get_first_node_in_group("hud")
 	if hud: hud.show_message("Quête : %s" % quests[id]["title"])
 
 func register_event(event_type: String, target: String, amount: int = 1) -> void:
@@ -144,7 +144,7 @@ func _progress_quest(id: String, amount: int) -> void:
 		quests[id]["completed"] = true
 		add_xp(int(quests[id]["reward_xp"]))
 		gold += int(quests[id]["reward_gold"])
-		var hud := get_tree().get_first_node_in_group("hud")
+		var hud = get_tree().get_first_node_in_group("hud")
 		if hud: hud.show_message("Quête terminée : %s (+%d XP, +%d or)." % [quests[id]["title"], quests[id]["reward_xp"], quests[id]["reward_gold"]])
 		if id == "first_blood": start_quest("lost_relic")
 	quest_changed.emit()
