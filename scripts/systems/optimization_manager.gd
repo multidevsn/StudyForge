@@ -16,8 +16,8 @@ func _process(delta: float) -> void:
 	var player := get_tree().get_first_node_in_group("player")
 	if player == null:
 		return
-	for node in get_tree().get_nodes_in_group("stream_optimized"):
+	for node: Node3D in get_tree().get_nodes_in_group("stream_optimized"):
 		if not is_instance_valid(node):
 			continue
-		var distance := node.global_position.distance_to(player.global_position)
+		var distance: float = node.global_position.distance_to(player.global_position)
 		node.visible = distance <= far_cull_distance
