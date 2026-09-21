@@ -41,6 +41,7 @@ func take_damage(amount: int) -> void:
 			rpg.add_xp(300)
 			rpg.gold += 250
 			rpg.add_item("ancient_relic", 1)
+			rpg.register_event("collect", "ancient_relic", 1)
 			rpg.register_event("kill", "boss", 1)
 		var hud := get_tree().get_first_node_in_group("hud")
 		if hud: hud.show_message("GARDIEN VAINCU — butin légendaire obtenu.")
