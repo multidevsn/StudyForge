@@ -24,9 +24,14 @@ These static assets are active in the village, central valley and streamed regio
 
 ## Character pipeline
 
-The project currently uses procedural/modular 3D character visuals for the player, villagers, guards, merchants and enemies. This deliberately avoids the skeletal GLB editor-import path that caused Godot to close during the previous art pass.
+The active game scenes now use real Quaternius 3D assets:
+- static character mesh for the player
+- the same real humanoid base asset for villagers, guards and merchants, with material variations
+- static Goblin, Orc and Demon meshes for enemies
 
-The previously embedded skeletal character/creature GLBs are preserved in Git history and are not part of the active import set.
+The character models are static derivatives of the original real Quaternius GLBs with skeleton/animation data removed to avoid the previous Godot 4.7 import crash.
+
+The original rigged GLBs remain preserved in Git history for a future isolated animation-import pass.
 
 ## Planned external character assets
 
