@@ -13,7 +13,7 @@ func set_variant(new_variant: String) -> void:
 	variant = new_variant
 	_configure_colors()
 	for child in get_children():
-		child.queue_free()
+		child.free()
 	_build()
 
 func _configure_colors() -> void:
