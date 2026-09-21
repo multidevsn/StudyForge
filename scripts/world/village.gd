@@ -11,7 +11,7 @@ func _build_village() -> void:
 		_make_house(pos)
 
 func _make_house(pos: Vector3) -> void:
-	var root := Node3D.new()
+	var root := StaticBody3D.new()
 	root.position = pos
 	add_child(root)
 	var wall := _mat("#9b7b59")
@@ -23,6 +23,12 @@ func _make_house(pos: Vector3) -> void:
 	var window := _mat("#8ac5d1")
 	for x in [-2.2, 2.2]:
 		_make_box(Vector3(1.2, 1.1, 0.15), Vector3(x, 2.0, 3.58), window, root)
+	var collision := CollisionShape3D.new()
+	var shape := BoxShape3D.new()
+	shape.size = Vector3(7.6, 4.0, 6.6)
+	collision.shape = shape
+	collision.position = Vector3(0, 2.0, 0)
+	root.add_child(collision)
 
 func _make_box(size: Vector3, pos: Vector3, mat: Material, parent: Node = self) -> MeshInstance3D:
 	var mesh := MeshInstance3D.new()
