@@ -1,9 +1,9 @@
 extends Node3D
 
-@export var variant := "goblin"
-@export var scale_factor := 1.0
-@export var body_color := Color("#5b8a45")
-@export var accent_color := Color("#7b3f56")
+@export var variant: String = "goblin"
+@export var scale_factor: float = 1.0
+@export var body_color: Color = Color(0.36, 0.54, 0.27, 1.0)
+@export var accent_color: Color = Color(0.48, 0.25, 0.34, 1.0)
 
 func _ready() -> void:
 	_configure_colors()
@@ -28,7 +28,7 @@ func _configure_colors() -> void:
 			body_color = Color("#5b8a45")
 			accent_color = Color("#7b3f56")
 
-func _mat(color: Color, roughness := 0.82) -> StandardMaterial3D:
+func _mat(color: Color, roughness: float = 0.82) -> StandardMaterial3D:
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = color
 	mat.roughness = roughness
