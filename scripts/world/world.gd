@@ -86,10 +86,17 @@ func _make_environment() -> void:
 	material.sky_horizon_color = Color("#d49b70")
 	material.ground_bottom_color = Color("#18251f")
 	material.ground_horizon_color = Color("#756b59")
+	material.energy_multiplier = 0.9
 	sky.sky_material = material
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	env.ambient_light_energy = 0.7
+	env.ambient_light_energy = 0.72
+	env.fog_enabled = true
+	env.fog_light_color = Color("#657287")
+	env.fog_light_energy = 0.55
+	env.fog_density = 0.006
+	env.fog_height = 8.0
+	env.fog_height_density = 0.02
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	env_node.environment = env
 	add_child(env_node)
@@ -144,12 +151,9 @@ func _make_river() -> void:
 	mesh.mesh = plane
 	mesh.position = Vector3(25, _height(25, 0) + 0.08, 0)
 	mesh.rotation_degrees.y = 12
-	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color("#2c7290")
-	mat.roughness = 0.16
-	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	mat.albedo_color.a = 0.84
-	mesh.material_override = mat
+	var shader_material := ShaderMaterial.new()
+	shader_material.shader = load("res://shaders/water.gdshader")
+	mesh.material_override = shader_material
 	add_child(mesh)
 
 func _make_village() -> void:
