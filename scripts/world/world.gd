@@ -41,9 +41,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	time_of_day = fmod(time_of_day + delta * 0.035, 24.0)
-	var daylight := clamp(sin((time_of_day - 6.0) / 12.0 * PI), 0.08, 1.0)
+	var daylight: float = clampf(sin((time_of_day - 6.0) / 12.0 * PI), 0.08, 1.0)
 	if sun:
-		sun.light_energy = lerp(0.12, 1.25, daylight)
+		sun.light_energy = lerpf(0.12, 1.25, daylight)
 		sun.rotation_degrees = Vector3(-35.0 + (time_of_day - 12.0) * 7.0, -35.0, 0.0)
 	if Engine.get_process_frames() % 1800 == 0:
 		save_game()
