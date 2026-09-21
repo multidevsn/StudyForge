@@ -33,31 +33,6 @@
 - [x] Boucle dialogue → quête → combat → loot → XP → récompense
 - [x] Boucle marchand → achat → inventaire → équipement
 
-### Limites V0.3
-- Donjon procédural léger.
-- Marchand avec interaction clavier minimale.
-- Événements déclenchés par timer.
-- Navigation mesh complète reportée à V0.4.
-
-## V0.4 — Production combat
-- [ ] Hitboxes / hurtboxes avancées
-- [ ] Armes avec statistiques
-- [ ] Combos
-- [ ] Variantes d'ennemis
-- [ ] Feedback VFX/SFX
-- [ ] Navigation meshes / agents
-- [ ] IA avancée
-
-## V0.5 — Monde ouvert
-- [ ] Plusieurs régions
-- [ ] Streaming de régions
-- [ ] LOD
-- [ ] Occlusion
-- [ ] Carte du monde
-- [ ] Fast travel
-- [ ] Événements persistants
-
-
 ## V1.0 — Monde ouvert et finition (complete)
 - [x] Monde ouvert à régions contiguës
 - [x] Streaming asynchrone des régions
@@ -67,33 +42,34 @@
 - [x] Persistance des ennemis vaincus
 - [x] Audio procédural musique + SFX
 - [x] HUD finalisé / crosshair / indicateur de région
-- [x] Version projet 1.0.0
+- [x] Projet aligné sur Godot 4.7 + GL Compatibility
 
-### Limites V1.0
-- Les assets 3D Quaternius/Poly Haven restent une étape d'intégration séparée : aucun ancien asset StudyForge n'est réutilisé.
-- Le streaming porte actuellement sur les régions de décor/terrain procédurales; les gros contenus narratifs restent dans la région centrale.
-- Le runtime FPS/compatibilité matériel n'a pas été exécuté dans cet environnement.
+## V1.1 — Monde vivant + refonte artistique (en cours)
+### Environnement
+- [x] Maisons et bâtiments Quaternius réels
+- [x] Arbres, buissons et rochers Quaternius réels
+- [x] Village agrandi
+- [x] Lampadaires, charrettes, tonneaux, caisses, clôtures, feux
+- [x] Vallée densifiée
+- [x] Rivière avec matériau animé
+- [ ] Herbe/fleurs/champignons supplémentaires
+- [ ] Décors de donjon modulaire
 
+### Personnages
+- [x] Joueur en personnage 3D modulaire
+- [x] Habitants avec variantes de vêtements
+- [x] Gardes avec équipement visuel
+- [x] Marchands / ancien différenciés
+- [x] Ennemis gobelin/orc/démon avec silhouettes distinctes
+- [x] Population ambulante dans le village
+- [x] Camps ennemis répartis dans la vallée
+- [ ] Importer et valider un vrai GLB humanoïde Quaternius à la fois dans Godot 4.7
+- [ ] Retarget Universal Animation Library 2
 
-## V1.1 — Professional asset rebuild (in progress)
-### Integrated
-- [x] Real Quaternius humanoid GLB for player
-- [x] Real Quaternius humanoid GLB for elder/merchant visuals
-- [x] Real Quaternius trees and bushes
-- [x] Real Quaternius rocks
-- [x] Real Quaternius village houses
-- [x] Real Quaternius inn / blacksmith / market / well
-- [x] Real Quaternius Goblin enemy
-- [x] Real Quaternius Demon boss
-- [x] Real Quaternius Orc reserved for enemy variants
-- [x] Asset provenance ledger
-
-### Remaining production pass
-- [ ] Embed and retarget Universal Animation Library Standard/2 to the humanoid
-- [ ] Add weapon/armor models from Fantasy Props / RPG packs
-- [ ] Add PBR terrain/stone/wood materials from Poly Haven
-- [ ] Add grass/flowers/mushrooms and biome-specific nature variation
-- [ ] Replace remaining procedural water with authored water material/VFX
-- [ ] Final combat VFX/SFX pass
-- [ ] LOD/impostor pass for large forests
-- [ ] Runtime profiling and hardware matrix
+### Production
+- [ ] Armes et armures visibles
+- [ ] PBR terrain/bois/pierre
+- [ ] VFX combat et impacts
+- [ ] Navigation avancée
+- [ ] LOD / impostors
+- [ ] Profiling matériel réel
