@@ -1,12 +1,19 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/player/player_animation_controller.gd" id="2"]
-[ext_resource type="PackedScene" path="res://assets/external/quaternius/characters/EclyriaHero.glb" id="3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape"]
-radius = 0.42
+radius = 0.45
 height = 1.8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh"]
+radius = 0.45
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="PlayerMat"]
+albedo_color = Color(0.16, 0.24, 0.34, 1)
+roughness = 0.72
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1")
@@ -15,15 +22,16 @@ script = ExtResource("1")
 position = Vector3(0, 0.9, 0)
 shape = SubResource("CapsuleShape")
 
-[node name="CharacterModel" parent="." instance=ExtResource("3")]
-position = Vector3(0, 0.02, 0)
-scale = Vector3(1.0, 1.0, 1.0)
+[node name="Visual" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.9, 0)
+mesh = SubResource("CapsuleMesh")
+material_override = SubResource("PlayerMat")
 
 [node name="AnimationController" type="Node" parent="."]
 script = ExtResource("2")
 
 [node name="CameraPivot" type="Node3D" parent="."]
-position = Vector3(0, 1.25, 0)
+position = Vector3(0, 1.35, 0)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot"]
 spring_length = 5.2
