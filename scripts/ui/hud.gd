@@ -9,8 +9,8 @@ func _ready() -> void:
 	add_to_group("hud")
 
 func _process(_delta: float) -> void:
-	var rpg := get_tree().get_first_node_in_group("rpg_system")
-	var streamer: Node3D = get_tree().get_first_node_in_group("region_streamer") as Node3D
+	var rpg = get_tree().get_first_node_in_group("rpg_system")
+	var streamer = get_tree().get_first_node_in_group("region_streamer")
 	if player and rpg:
 		var speed := Vector2(player.velocity.x, player.velocity.z).length()
 		status.text = "ECLYRIA // VALLEY OF ECHOES\nHP %d/%d  STA %d/100  LV %d  XP %d/%d  OR %d\nATK %d  SPD %.1f" % [
