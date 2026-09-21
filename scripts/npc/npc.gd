@@ -12,8 +12,8 @@ func _process(delta: float) -> void:
 	if player == null or cooldown > 0.0: return
 	if global_position.distance_to(player.global_position) <= 3.0 and Input.is_key_pressed(KEY_E):
 		cooldown = 0.7
-		var rpg := get_tree().get_first_node_in_group("rpg_system")
-		var hud := get_tree().get_first_node_in_group("hud")
+		var rpg = get_tree().get_first_node_in_group("rpg_system")
+		var hud = get_tree().get_first_node_in_group("hud")
 		if hud: hud.show_message(lines[line_index % lines.size()])
 		line_index += 1
 		if rpg:
