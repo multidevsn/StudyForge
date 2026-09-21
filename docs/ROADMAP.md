@@ -11,27 +11,36 @@
 - [x] WASD movement
 - [x] Sprint + stamina
 - [x] Jump
-- [x] Terrain collisions
+- [x] Terrain and building collisions
 - [x] First explorable valley
-- [x] Procedural trees
-- [x] Procedural rocks
+- [x] Trees
+- [x] Rocks
 - [x] River
-- [x] Medieval-style village
+- [x] Village
 - [x] Interactive NPC
 - [x] First enemy
 - [x] Basic melee combat
-- [x] Enemy AI / chase / attack
+- [x] Enemy chase/attack AI
 - [x] HUD
-- [x] Save/load with F5/F9
-- [x] Automatic periodic save
+- [x] F5 save / F9 load
+- [x] Automatic save
 
-## V0.2 — Production assets
-- [ ] Replace prototype player with selected CC0 character
-- [ ] Character animations
-- [ ] Village props and visual polish
-- [ ] Better terrain materials
-- [ ] Audio and SFX
-- [ ] Asset license registry
+## V0.2 — Visual production pass (in progress)
+- [x] Approved CC0 asset sources documented
+- [x] External asset intake structure
+- [x] Player animation adapter
+- [x] Player scene ready for real humanoid rig
+- [x] Village landmark/prop layer
+- [ ] Import Quaternius Universal Base Character
+- [ ] Import Universal Animation Library + Library 2
+- [ ] Replace procedural player mesh
+- [ ] Retarget idle/walk/run/jump/attack/death
+- [ ] Replace village houses with Medieval Village MegaKit
+- [ ] Replace trees/rocks with Stylized Nature MegaKit
+- [ ] Add Fantasy Props weapons/chests/furniture
+- [ ] Add selected Poly Haven materials/HDRI
+- [ ] Audio/SFX pass
+- [ ] Performance/LOD pass
 
 ## V0.3 — Combat expansion
 - [ ] Weapons
