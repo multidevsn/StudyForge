@@ -11,7 +11,7 @@ extends CharacterBody3D
 @export var attack_range := 3.0
 
 @onready var pivot: Node3D = $CameraPivot
-@onready var visual: Node3D = $CharacterModel
+@onready var visual: Node3D = get_node_or_null("CharacterModel") as Node3D
 @onready var animation_controller: Node = $AnimationController
 
 var camera_pitch := -0.18
@@ -23,6 +23,8 @@ var stamina := 100.0
 func _ready() -> void:
 	add_to_group("player")
 	health = max_health
+	if visual == null:
+		visual = get_node_or_null("Visual") as Node3D
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -59,13 +61,17 @@ func _physics_process(delta: float) -> void:
 		velocity.y -= gravity * delta
 	elif Input.is_physical_key_pressed(KEY_SPACE):
 		velocity.y = jump_velocity
-	if direction.length_squared() > 0.01:
-		visual.rotation.y = lerp_angle(visual.rotation.y, atan2(direction.x, direction.z), delta * 10.0)
-	if attack_time > 0.0:
-		attack_time -= delta
-		visual.scale = Vector3.ONE * (1.0 + sin((0.25 - attack_time) * 20.0) * 0.06)
+	if visual:
+		if direction.length_squared() > 0.01:
+			visual.rotation.y = lerp_angle(visual.rotation.y, atan2(direction.x, direction.z), delta * 10.0)
+		if attack_time > 0.0:
+			attack_time -= delta
+			visual.scale = Vector3.ONE * (1.0 + sin((0.25 - attack_time) * 20.0) * 0.06)
+		else:
+			visual.scale = Vector3.ONE
 	else:
-		visual.scale = Vector3.ONE
+		if attack_time > 0.0:
+			attack_time -= delta
 	move_and_slide()
 	if animation_controller and animation_controller.has_method("update_state"):
 		animation_controller.update_state(Vector2(velocity.x, velocity.z).length(), is_on_floor(), sprinting, attacking)
