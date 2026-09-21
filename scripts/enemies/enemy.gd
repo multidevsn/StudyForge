@@ -5,6 +5,7 @@ extends CharacterBody3D
 @export var attack_damage := 8
 @export var attack_range := 2.0
 @export var detection_range := 16.0
+@export var enemy_id := ""
 
 var health := 60
 var attack_cooldown := 0.0
@@ -55,6 +56,8 @@ func flash_hit() -> void:
 		)
 
 func _die() -> void:
+	var audio := get_tree().get_first_node_in_group("audio_manager")
+	if audio: audio.play_sfx("hit")
 	var world := get_parent()
 	if world and world.has_method("on_enemy_defeated"):
 		world.on_enemy_defeated(self)
