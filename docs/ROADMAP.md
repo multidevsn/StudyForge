@@ -1,76 +1,34 @@
 # ECLYRIA roadmap
 
-## V0.1 — Fondations jouables (complete)
-- [x] Terrain 3D, sky/soleil, éclairage
-- [x] Player 3D + caméra troisième personne
-- [x] Déplacement, sprint, saut, collisions
-- [x] Première zone : vallée, arbres, rochers, rivière
-- [x] Village + PNJ + premier ennemi
-- [x] Combat basique
-- [x] HUD + sauvegarde
+## V1.1 — Real asset production pass
 
-## V0.2 — RPG progression (complete)
-- [x] Inventaire
-- [x] Équipement
-- [x] Loot
-- [x] XP
-- [x] Niveaux
-- [x] Compétences
-- [x] Récompenses reliées au combat
-- [x] Sauvegarde des données RPG
-- [x] HUD progression
-- [x] Raccourcis I/K/J/U
-
-## V0.3 — Monde et contenu (complete)
-- [x] Quêtes
-- [x] Dialogues
-- [x] PNJ
-- [x] Marchand
-- [x] Donjon
-- [x] Boss
-- [x] Événements dynamiques
-- [x] Récompenses de quêtes
-- [x] Boucle dialogue → quête → combat → loot → XP → récompense
-- [x] Boucle marchand → achat → inventaire → équipement
-
-## V1.0 — Monde ouvert et finition (complete)
-- [x] Monde ouvert à régions contiguës
-- [x] Streaming asynchrone des régions
-- [x] Déchargement/rechargement autour du joueur
-- [x] Optimisation 3D et culling
-- [x] Sauvegarde complète joueur + RPG + monde
-- [x] Persistance des ennemis vaincus
-- [x] Audio procédural musique + SFX
-- [x] HUD finalisé / crosshair / indicateur de région
-- [x] Projet aligné sur Godot 4.7 + GL Compatibility
-
-## V1.1 — Monde vivant + refonte artistique (production pass)
-### Environnement
-- [x] Maisons et bâtiments Quaternius réels
-- [x] Arbres, buissons et rochers Quaternius réels
-- [x] Village agrandi
-- [x] Lampadaires, charrettes, tonneaux, caisses, clôtures, feux
-- [x] Vallée densifiée
-- [x] Rivière avec matériau animé
-- [x] Herbe réelle et buissons fleuris Quaternius
-- [x] Donjon modulaire en vrais assets Quaternius
-
-### Personnages
-- [x] Joueur en personnage 3D modulaire
-- [x] Habitants avec variantes de vêtements
-- [x] Gardes avec équipement visuel
-- [x] Marchands / ancien différenciés
-- [x] Ennemis gobelin/orc/démon avec silhouettes distinctes
-- [x] Population ambulante dans le village
-- [x] Camps ennemis répartis dans la vallée
-- [ ] Importer et valider un vrai GLB humanoïde Quaternius à la fois dans Godot 4.7
+### Characters
+- [x] Real Quaternius humanoid for player
+- [x] Real Quaternius humanoid for NPCs/merchants
+- [x] Real Quaternius Goblin
+- [x] Real Quaternius Orc
+- [x] Real Quaternius Demon
+- [x] Gameplay collision separated from visual models
+- [ ] Reintroduce skeletal character rigs one-by-one in Godot 4.7
 - [ ] Retarget Universal Animation Library 2
 
-### Production
-- [x] Armes et armures visibles via vrais props Quaternius
-- [x] Personnages et ennemis basés sur vrais meshes Quaternius statiques
-- [ ] PBR terrain/bois/pierre
-- [ ] VFX combat et impacts
-- [ ] Navigation avancée
-- [ ] LOD / impostors
-- [ ] Profiling matériel réel
+### Environment
+- [x] Real Quaternius houses and village buildings
+- [x] Real Quaternius carts, barrels, crates, fences and bonfires
+- [x] Real Quaternius lanterns, market prop, anvil and weapon stand
+- [x] Real Quaternius trees, bushes, flowers and grass
+- [x] Real Quaternius rocks
+- [x] Real Quaternius modular dungeon floor/walls/arches/pillars/torches/chest
+- [x] World streaming with visibility ranges
+- [ ] More biome-specific asset sets
+- [ ] Real PBR terrain materials from Poly Haven
+- [ ] LOD/impostor pass
+
+### Combat / presentation
+- [ ] Real weapon model attached to player equipment
+- [ ] Combat VFX
+- [ ] Hit reactions
+- [ ] Navigation / crowd avoidance
+- [ ] Runtime profiling on target hardware
+
+Godot recommends glTF 2.0/GLB for 3D scenes; OBJ is more limited for modern material/skeleton workflows. ECLYRIA therefore prefers GLB for the active static asset pipeline. 
