@@ -10,7 +10,7 @@ signal streaming_status(text: String)
 var loaded_regions: Dictionary = {}
 var discovered_regions: Dictionary = {}
 var region_scene: PackedScene
-var current_coord := Vector2i(999999, 999999)
+var current_coord := Vector2i(0, 0)
 var loading_started := false
 
 func _ready() -> void:
@@ -24,7 +24,9 @@ func _process(_delta: float) -> void:
 		if status == ResourceLoader.THREAD_LOAD_LOADED:
 			region_scene = ResourceLoader.load_threaded_get("res://scenes/world/Region.tscn")
 			loading_started = true
-			_sync_regions(true)
+			var player := get_tree().get_first_node_in_group("player")
+			current_coord = world_to_region(player.global_position) if player else Vector2i.ZERO
+			_sync_regions()
 		elif status == ResourceLoader.THREAD_LOAD_FAILED:
 			loading_started = true
 			streaming_status.emit("Streaming indisponible.")
@@ -37,14 +39,14 @@ func _process(_delta: float) -> void:
 	var next_coord := world_to_region(player.global_position)
 	if next_coord != current_coord:
 		current_coord = next_coord
-		_sync_regions(false)
+		_sync_regions()
 		region_changed.emit(current_coord)
 	streaming_status.emit("Région %d,%d • %d régions actives" % [current_coord.x, current_coord.y, loaded_regions.size()])
 
 func world_to_region(pos: Vector3) -> Vector2i:
 	return Vector2i(floori(pos.x / region_size), floori(pos.z / region_size))
 
-func _sync_regions(initial: bool) -> void:
+func _sync_regions() -> void:
 	var desired: Dictionary = {}
 	for dz in range(-active_radius, active_radius + 1):
 		for dx in range(-active_radius, active_radius + 1):
@@ -60,8 +62,7 @@ func _sync_regions(initial: bool) -> void:
 			if is_instance_valid(old):
 				old.queue_free()
 			loaded_regions.erase(key)
-	if initial:
-		streaming_status.emit("Monde ouvert initialisé.")
+	streaming_status.emit("Monde ouvert : streaming actif.")
 
 func _load_region(c: Vector2i) -> void:
 	var region := region_scene.instantiate()
