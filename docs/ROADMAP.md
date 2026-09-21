@@ -1,52 +1,66 @@
 # ECLYRIA roadmap
 
-## 0.1 — Foundation
+## V0.1 — Playable foundation (complete)
 - [x] Repository cleaned
-- [x] Previous repository assets excluded
-- [x] Procedural valley
-- [x] Third-person controller
-- [x] Camera
-- [x] Lighting and day/night foundation
-- [x] Procedural vegetation, rocks and ruins
+- [x] No StudyForge assets reused
+- [x] Procedural 3D terrain with relief
+- [x] Sky and sun
+- [x] Dynamic directional lighting / day-night
+- [x] 3D player
+- [x] Third-person camera
+- [x] WASD movement
+- [x] Sprint + stamina
+- [x] Jump
+- [x] Terrain collisions
+- [x] First explorable valley
+- [x] Procedural trees
+- [x] Procedural rocks
+- [x] River
+- [x] Medieval-style village
+- [x] Interactive NPC
+- [x] First enemy
+- [x] Basic melee combat
+- [x] Enemy AI / chase / attack
 - [x] HUD
+- [x] Save/load with F5/F9
+- [x] Automatic periodic save
 
-## 0.2 — Real assets
-- [ ] Select external free/CC0 assets
-- [ ] Character and animations
-- [ ] Medieval village
-- [ ] Fantasy props
-- [ ] Terrain materials
-- [ ] Audio
-- [ ] License and attribution registry
+## V0.2 — Production assets
+- [ ] Replace prototype player with selected CC0 character
+- [ ] Character animations
+- [ ] Village props and visual polish
+- [ ] Better terrain materials
+- [ ] Audio and SFX
+- [ ] Asset license registry
 
-## 0.3 — Combat
-- [ ] Weapon system
-- [ ] Hitboxes
-- [ ] Damage
-- [ ] Enemy state machine
-- [ ] Navigation
+## V0.3 — Combat expansion
+- [ ] Weapons
+- [ ] Hitboxes / hurtboxes
+- [ ] Enemy variants
+- [ ] Navigation meshes
 - [ ] Loot
+- [ ] Combat feedback
 
-## 0.4 — RPG
-- [ ] Stats
-- [ ] XP and leveling
+## V0.4 — RPG
+- [ ] XP
+- [ ] Leveling
 - [ ] Inventory
 - [ ] Equipment
 - [ ] Skills
-
-## 0.5 — World
-- [ ] NPCs
-- [ ] Dialogue
 - [ ] Quests
-- [ ] Village
+
+## V0.5 — World
+- [ ] Multiple NPCs
+- [ ] Dialogue system
+- [ ] Quest chains
 - [ ] Dungeons
 - [ ] Bosses
 - [ ] Dynamic events
 
-## 0.6 — Open world
+## V0.6 — Open world
 - [ ] Region streaming
 - [ ] LOD
 - [ ] Occlusion
-- [ ] Save system
+- [ ] Persistent world state
 - [ ] World map
 - [ ] Fast travel
