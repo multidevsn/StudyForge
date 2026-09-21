@@ -51,6 +51,9 @@ func add_item(item_id: String, amount: int = 1) -> void:
 	inventory[item_id] = int(inventory.get(item_id, 0)) + amount
 	inventory_changed.emit()
 	_update_player()
+	var audio := get_tree().get_first_node_in_group("audio_manager")
+	if audio:
+		audio.play_sfx("pickup")
 
 func remove_item(item_id: String, amount: int = 1) -> bool:
 	if int(inventory.get(item_id, 0)) < amount:
