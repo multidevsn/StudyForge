@@ -9,7 +9,7 @@ func _ready() -> void:
 	add_to_group("dungeon")
 
 func _process(_delta: float) -> void:
-	var player := get_tree().get_first_node_in_group("player")
+	var player: Node3D = get_tree().get_first_node_in_group("player") as Node3D
 	if player == null: return
 	if not active and player.global_position.distance_to(global_position) < 4.0 and Input.is_key_pressed(KEY_E):
 		_enter(player)
@@ -34,6 +34,8 @@ func _make_dungeon() -> void:
 		mat.albedo_color = Color("#282433")
 		room.material_override = mat
 		add_child(room)
-	var boss_scene := preload("res://scenes/enemies/Boss.tscn").instantiate()
+	var boss_scene: CharacterBody3D = preload("res://scenes/enemies/Boss.tscn").instantiate() as CharacterBody3D
+	if boss_scene == null:
+		return
 	boss_scene.position = dungeon_origin + Vector3(0, 0, -8)
 	add_child(boss_scene)
