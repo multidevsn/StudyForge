@@ -8,6 +8,9 @@ const ROCK_SCENE_1: PackedScene = preload("res://assets/external/quaternius/natu
 const ROCK_SCENE_2: PackedScene = preload("res://assets/external/quaternius/nature/rock_2.glb")
 const GRASS_SHORT_SCENE: PackedScene = preload("res://assets/external/quaternius/nature/Grass_Common_Short.glb")
 const GRASS_TALL_SCENE: PackedScene = preload("res://assets/external/quaternius/nature/Grass_Common_Tall.glb")
+const COLUMN_BROKEN_SCENE: PackedScene = preload("res://assets/external/quaternius/props/column_broken.glb")
+const GRAVESTONE_SCENE: PackedScene = preload("res://assets/external/quaternius/props/gravestone_decorative.glb")
+const CRYPT_SCENE: PackedScene = preload("res://assets/external/quaternius/props/crypt.glb")
 
 @export var world_size := 80.0
 @export var terrain_resolution := 34
@@ -265,16 +268,33 @@ func _make_population() -> void:
 	add_child(population)
 
 func _make_ruins() -> void:
-	for p in [Vector3(-30,_height(-30,-25),-25),Vector3(-34,_height(-34,-25),-25),Vector3(-32,_height(-32,-29),-29)]:
-		var pillar := MeshInstance3D.new()
-		var box := BoxMesh.new()
-		box.size = Vector3(1.4,4.5,1.4)
-		pillar.mesh = box
-		pillar.position = p + Vector3.UP * 2.25
-		var mat := StandardMaterial3D.new()
-		mat.albedo_color = Color("#726b61")
-		pillar.material_override = mat
-		add_child(pillar)
+	var positions: Array[Vector3] = [
+		Vector3(-30.0, _height(-30.0, -25.0), -25.0),
+		Vector3(-34.0, _height(-34.0, -25.0), -25.0)
+	]
+	for p in positions:
+		_spawn_world_asset(COLUMN_BROKEN_SCENE, p, 1.0)
+	for p in [
+		Vector3(-32.0, _height(-32.0, -29.0), -29.0),
+		Vector3(-29.0, _height(-29.0, -28.0), -30.5)
+	]:
+		_spawn_world_asset(GRAVESTONE_SCENE, p, 0.9)
+	_spawn_world_asset(CRYPT_SCENE, Vector3(-31.0, _height(-31.0, -32.0), -32.0), 0.95)
+
+func _spawn_world_asset(scene: PackedScene, pos: Vector3, scale_factor: float) -> void:
+	if scene == null:
+		return
+	var instance: Node3D = scene.instantiate() as Node3D
+	if instance == null:
+		return
+	instance.position = pos
+	instance.rotation.y = rng.randf_range(-PI, PI)
+	instance.scale = Vector3.ONE * scale_factor
+	add_child(instance)
+	for node in instance.find_children("*", "VisualInstance3D", true, false):
+		if node is VisualInstance3D:
+			(node as VisualInstance3D).visibility_range_end = 120.0
+			node.add_to_group("stream_optimized")
 
 func on_enemy_defeated(enemy: Node) -> void:
 	defeated_enemies += 1
