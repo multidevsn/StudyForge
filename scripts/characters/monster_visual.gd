@@ -12,6 +12,9 @@ func _ready() -> void:
 func set_variant(new_variant: String) -> void:
 	variant = new_variant
 	_configure_colors()
+	for child in get_children():
+		child.queue_free()
+	_build()
 
 func _configure_colors() -> void:
 	match variant:
