@@ -1,5 +1,14 @@
 extends Node3D
 
+const TREE_SCENE_1: PackedScene = preload("res://assets/external/quaternius/nature/CommonTree_1.glb")
+const TREE_SCENE_2: PackedScene = preload("res://assets/external/quaternius/nature/CommonTree_2.glb")
+const BUSH_SCENE: PackedScene = preload("res://assets/external/quaternius/nature/Bush_Common.glb")
+const BUSH_FLOWERS_SCENE: PackedScene = preload("res://assets/external/quaternius/nature/Bush_Common_Flowers.glb")
+const ROCK_SCENE_1: PackedScene = preload("res://assets/external/quaternius/nature/rock_1.glb")
+const ROCK_SCENE_2: PackedScene = preload("res://assets/external/quaternius/nature/rock_2.glb")
+const GRASS_SHORT_SCENE: PackedScene = preload("res://assets/external/quaternius/nature/Grass_Common_Short.glb")
+const GRASS_TALL_SCENE: PackedScene = preload("res://assets/external/quaternius/nature/Grass_Common_Tall.glb")
+
 var coord := Vector2i.ZERO
 var region_size := 80.0
 var resolution := 18
@@ -79,13 +88,13 @@ func _make_props(origin: Vector3) -> void:
 		var x := rng.randf_range(-region_size * 0.46, region_size * 0.46)
 		var z := rng.randf_range(-region_size * 0.46, region_size * 0.46)
 		_spawn_rock(Vector3(origin.x + x, _height(origin.x + x, origin.z + z), origin.z + z))
+	for i in range(18):
+		var gx := rng.randf_range(-region_size * 0.46, region_size * 0.46)
+		var gz := rng.randf_range(-region_size * 0.46, region_size * 0.46)
+		_spawn_grass(Vector3(origin.x + gx, _height(origin.x + gx, origin.z + gz), origin.z + gz))
 
 func _spawn_tree(pos: Vector3) -> void:
-	var tree_paths: Array[String] = [
-		"res://assets/external/quaternius/nature/CommonTree_1.glb",
-		"res://assets/external/quaternius/nature/CommonTree_2.glb"
-	]
-	var tree_scene: PackedScene = load(tree_paths[rng.randi_range(0, tree_paths.size() - 1)])
+	var tree_scene: PackedScene = TREE_SCENE_1 if rng.randi_range(0, 1) == 0 else TREE_SCENE_2
 	if tree_scene == null:
 		return
 	var instance: Node3D = tree_scene.instantiate() as Node3D
@@ -101,7 +110,7 @@ func _spawn_tree(pos: Vector3) -> void:
 			node.add_to_group("stream_optimized")
 
 func _spawn_bush(pos: Vector3) -> void:
-	var bush_scene: PackedScene = load("res://assets/external/quaternius/nature/Bush_Common.glb")
+	var bush_scene: PackedScene = BUSH_SCENE if rng.randi_range(0, 3) != 0 else BUSH_FLOWERS_SCENE
 	if bush_scene == null:
 		return
 	var instance: Node3D = bush_scene.instantiate() as Node3D
@@ -117,11 +126,7 @@ func _spawn_bush(pos: Vector3) -> void:
 			node.add_to_group("stream_optimized")
 
 func _spawn_rock(pos: Vector3) -> void:
-	var rock_paths: Array[String] = [
-		"res://assets/external/quaternius/nature/rock_1.glb",
-		"res://assets/external/quaternius/nature/rock_2.glb"
-	]
-	var rock_scene: PackedScene = load(rock_paths[rng.randi_range(0, rock_paths.size() - 1)])
+	var rock_scene: PackedScene = ROCK_SCENE_1 if rng.randi_range(0, 1) == 0 else ROCK_SCENE_2
 	if rock_scene == null:
 		return
 	var instance: Node3D = rock_scene.instantiate() as Node3D
@@ -134,4 +139,19 @@ func _spawn_rock(pos: Vector3) -> void:
 	for node in instance.find_children("*", "VisualInstance3D", true, false):
 		if node is VisualInstance3D:
 			(node as VisualInstance3D).visibility_range_end = region_size * 1.15
+			node.add_to_group("stream_optimized")
+
+
+func _spawn_grass(pos: Vector3) -> void:
+	var grass_scene: PackedScene = GRASS_SHORT_SCENE if rng.randi_range(0, 1) == 0 else GRASS_TALL_SCENE
+	var instance: Node3D = grass_scene.instantiate() as Node3D
+	if instance == null:
+		return
+	instance.position = pos
+	instance.rotation.y = rng.randf_range(-PI, PI)
+	instance.scale = Vector3.ONE * rng.randf_range(0.8, 1.2)
+	add_child(instance)
+	for node in instance.find_children("*", "VisualInstance3D", true, false):
+		if node is VisualInstance3D:
+			(node as VisualInstance3D).visibility_range_end = region_size * 0.8
 			node.add_to_group("stream_optimized")
