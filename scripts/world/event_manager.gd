@@ -14,14 +14,16 @@ func _process(delta: float) -> void:
 	_trigger_event()
 
 func _trigger_event() -> void:
-	var player := get_tree().get_first_node_in_group("player")
+	var player: Node3D = get_tree().get_first_node_in_group("player") as Node3D
 	var hud := get_tree().get_first_node_in_group("hud")
 	if hud == null: return
 	match event_index % 3:
 		0:
 			hud.show_message("ÉVÉNEMENT — Des ombres approchent du village !")
 			if player:
-				var enemy := preload("res://scenes/enemies/Enemy.tscn").instantiate()
+				var enemy: CharacterBody3D = preload("res://scenes/enemies/Enemy.tscn").instantiate() as CharacterBody3D
+				if enemy == null:
+					return
 				enemy.position = player.global_position + Vector3(8, 0, -8)
 				get_parent().add_child(enemy)
 		1:
