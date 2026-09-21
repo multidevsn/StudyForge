@@ -75,6 +75,9 @@ func attack() -> void:
 		return
 	attacking = true
 	attack_time = 0.25
+	var audio := get_tree().get_first_node_in_group("audio_manager")
+	if audio:
+		audio.play_sfx("attack")
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if not is_instance_valid(enemy):
 			continue
@@ -89,6 +92,9 @@ func attack() -> void:
 
 func take_damage(amount: int) -> void:
 	health = max(health - amount, 0)
+	var audio := get_tree().get_first_node_in_group("audio_manager")
+	if audio:
+		audio.play_sfx("hit")
 	if health <= 0:
 		health = max_health
 		global_position = Vector3(0, 3, 8)
