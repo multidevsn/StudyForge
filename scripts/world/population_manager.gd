@@ -1,7 +1,8 @@
 extends Node3D
 
-var citizen_visual_script := preload("res://scripts/characters/humanoid_visual.gd")
-var citizen_agent_script := preload("res://scripts/world/citizen.gd")
+const HERO_SCENE: PackedScene = preload("res://assets/external/quaternius/static_characters/EclyriaHero_static.glb")
+const CITIZEN_AGENT_SCRIPT: Script = preload("res://scripts/world/citizen.gd")
+const CHARACTER_TINT_SCRIPT: Script = preload("res://scripts/characters/character_tint.gd")
 var enemy_scene := preload("res://scenes/enemies/Enemy.tscn")
 
 func _ready() -> void:
@@ -41,7 +42,7 @@ func _spawn_citizen(pos: Vector3, citizen_role: String, skin: Color, outfit: Col
 	var citizen := CharacterBody3D.new()
 	citizen.name = "%s_%d" % [citizen_role.capitalize(), get_child_count()]
 	citizen.position = Vector3(pos.x, _height(pos.x, pos.z), pos.z)
-	citizen.set_script(citizen_agent_script)
+	citizen.set_script(CITIZEN_AGENT_SCRIPT)
 	citizen.set("walk_speed", 1.1 if citizen_role == "guard" else 1.35)
 	citizen.set("patrol_radius", 4.5 if citizen_role == "guard" else 7.0)
 	citizen.set("role", citizen_role)
@@ -54,14 +55,21 @@ func _spawn_citizen(pos: Vector3, citizen_role: String, skin: Color, outfit: Col
 	collider.position = Vector3(0, 0.88, 0)
 	citizen.add_child(collider)
 
-	var visual := Node3D.new()
+	var visual: Node3D = HERO_SCENE.instantiate() as Node3D
+	if visual == null:
+		citizen.free()
+		return
 	visual.name = "Visual"
-	visual.set_script(citizen_visual_script)
-	visual.role = citizen_role
-	visual.skin_color = skin
-	visual.outfit_color = outfit
-	visual.accent_color = accent
-	visual.scale_factor = size
+	visual.scale = Vector3.ONE * size
+	visual.set_script(CHARACTER_TINT_SCRIPT)
+	if citizen_role == "guard":
+		visual.set("tint", Color(0.72, 0.82, 0.98, 1.0))
+	elif citizen_role == "merchant":
+		visual.set("tint", Color(1.0, 0.78, 0.48, 1.0))
+	elif citizen_role == "elder":
+		visual.set("tint", Color(0.82, 0.84, 0.92, 1.0))
+	else:
+		visual.set("tint", Color(0.92, 0.96, 1.0, 1.0))
 	citizen.add_child(visual)
 	add_child(citizen)
 
