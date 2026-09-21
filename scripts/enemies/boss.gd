@@ -13,7 +13,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	cooldown = max(cooldown - delta, 0.0)
-	var player := get_tree().get_first_node_in_group("player")
+	var player: Node3D = get_tree().get_first_node_in_group("player") as Node3D
 	if player == null: return
 	var d := global_position.distance_to(player.global_position)
 	if d > 22.0: return
@@ -33,16 +33,16 @@ func take_damage(amount: int) -> void:
 	if health <= max_health * 0.5 and phase == 1:
 		phase = 2
 		move_speed = 3.0
-		var hud := get_tree().get_first_node_in_group("hud")
+		var hud = get_tree().get_first_node_in_group("hud")
 		if hud: hud.show_message("BOSS — phase 2 !")
 	if health == 0:
-		var rpg := get_tree().get_first_node_in_group("rpg_system")
+		var rpg = get_tree().get_first_node_in_group("rpg_system")
 		if rpg:
 			rpg.add_xp(300)
 			rpg.gold += 250
 			rpg.add_item("ancient_relic", 1)
 			rpg.register_event("collect", "ancient_relic", 1)
 			rpg.register_event("kill", "boss", 1)
-		var hud := get_tree().get_first_node_in_group("hud")
+		var hud = get_tree().get_first_node_in_group("hud")
 		if hud: hud.show_message("GARDIEN VAINCU — butin légendaire obtenu.")
 		queue_free()
