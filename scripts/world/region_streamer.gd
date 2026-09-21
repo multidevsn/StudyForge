@@ -20,9 +20,14 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if not loading_started:
-		var status := ResourceLoader.load_threaded_get_status("res://scenes/world/Region.tscn")
+		var status: int = ResourceLoader.load_threaded_get_status("res://scenes/world/Region.tscn")
 		if status == ResourceLoader.THREAD_LOAD_LOADED:
-			region_scene = ResourceLoader.load_threaded_get("res://scenes/world/Region.tscn")
+			var loaded_resource: Resource = ResourceLoader.load_threaded_get("res://scenes/world/Region.tscn")
+			if loaded_resource is PackedScene:
+				region_scene = loaded_resource as PackedScene
+			else:
+				loading_started = true
+				return
 			loading_started = true
 			var player: Node3D = get_tree().get_first_node_in_group("player") as Node3D
 			current_coord = world_to_region(player.global_position) if player else Vector2i.ZERO
