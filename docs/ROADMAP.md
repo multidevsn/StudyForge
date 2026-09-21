@@ -56,3 +56,20 @@
 - [ ] Carte du monde
 - [ ] Fast travel
 - [ ] Événements persistants
+
+
+## V1.0 — Monde ouvert et finition (complete)
+- [x] Monde ouvert à régions contiguës
+- [x] Streaming asynchrone des régions
+- [x] Déchargement/rechargement autour du joueur
+- [x] Optimisation 3D et culling
+- [x] Sauvegarde complète joueur + RPG + monde
+- [x] Persistance des ennemis vaincus
+- [x] Audio procédural musique + SFX
+- [x] HUD finalisé / crosshair / indicateur de région
+- [x] Version projet 1.0.0
+
+### Limites V1.0
+- Les assets 3D Quaternius/Poly Haven restent une étape d'intégration séparée : aucun ancien asset StudyForge n'est réutilisé.
+- Le streaming porte actuellement sur les régions de décor/terrain procédurales; les gros contenus narratifs restent dans la région centrale.
+- Le runtime FPS/compatibilité matériel n'a pas été exécuté dans cet environnement.
