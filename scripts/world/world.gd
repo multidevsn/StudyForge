@@ -1,14 +1,19 @@
 extends Node3D
-@export var world_size := 140.0
-@export var terrain_resolution := 42
-@export var tree_count := 70
-@export var rock_count := 38
+
+@export var world_size := 80.0
+@export var terrain_resolution := 34
+@export var tree_count := 38
+@export var rock_count := 20
+
 var rng := RandomNumberGenerator.new()
 var sun: DirectionalLight3D
 var time_of_day := 8.0
 var defeated_enemies := 0
+var defeated_enemy_ids: Dictionary = {}
 var save_system
 var rpg_system
+var region_streamer
+var event_manager
 
 func _ready() -> void:
 	rng.seed = 777777
@@ -17,6 +22,20 @@ func _ready() -> void:
 	add_child(rpg_system)
 	save_system = preload("res://scripts/systems/save_system.gd").new()
 	add_child(save_system)
+
+	var audio := preload("res://scripts/systems/audio_manager.gd").new()
+	audio.name = "AudioManager"
+	add_child(audio)
+	var optimization := preload("res://scripts/systems/optimization_manager.gd").new()
+	optimization.name = "OptimizationManager"
+	add_child(optimization)
+	region_streamer = preload("res://scripts/world/region_streamer.gd").new()
+	region_streamer.name = "RegionStreamer"
+	add_child(region_streamer)
+	event_manager = preload("res://scripts/world/event_manager.gd").new()
+	event_manager.name = "EventManager"
+	add_child(event_manager)
+
 	_build_world()
 	call_deferred("_try_load")
 
@@ -31,11 +50,14 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_F5: save_game()
-		elif event.keycode == KEY_F9: _try_load()
+		if event.keycode == KEY_F5:
+			save_game()
+		elif event.keycode == KEY_F9:
+			_try_load()
 		elif event.keycode == KEY_J:
 			var hud := get_tree().get_first_node_in_group("hud")
-			if hud and rpg_system: hud.show_message(rpg_system.quests_text())
+			if hud and rpg_system:
+				hud.show_message(rpg_system.quests_text())
 
 func _build_world() -> void:
 	_make_environment()
@@ -46,9 +68,10 @@ func _build_world() -> void:
 	_make_merchant()
 	_make_enemy()
 	_make_dungeon()
-	_make_events()
-	for i in range(tree_count): _spawn_tree(_random_ground_position())
-	for i in range(rock_count): _spawn_rock(_random_ground_position())
+	for i in range(tree_count):
+		_spawn_tree(_random_ground_position())
+	for i in range(rock_count):
+		_spawn_rock(_random_ground_position())
 	_make_ruins()
 
 func _make_environment() -> void:
@@ -93,7 +116,6 @@ func _make_terrain() -> void:
 			var z0 := -half + z * step
 			var z1 := z0 + step
 			for v in [Vector3(x0,_height(x0,z0),z0),Vector3(x1,_height(x1,z0),z0),Vector3(x1,_height(x1,z1),z1),Vector3(x0,_height(x0,z0),z0),Vector3(x1,_height(x1,z1),z1),Vector3(x0,_height(x0,z1),z1)]:
-				st.set_uv(Vector2(v.x / world_size, v.z / world_size))
 				st.add_vertex(v)
 				faces.append(v)
 	st.generate_normals()
@@ -116,7 +138,7 @@ func _make_river() -> void:
 	var mesh := MeshInstance3D.new()
 	mesh.name = "River"
 	var plane := PlaneMesh.new()
-	plane.size = Vector2(18, world_size * 0.95)
+	plane.size = Vector2(12, world_size * 0.95)
 	mesh.mesh = plane
 	mesh.position = Vector3(25, _height(25, 0) + 0.08, 0)
 	mesh.rotation_degrees.y = 12
@@ -136,6 +158,7 @@ func _make_village() -> void:
 func _make_npc() -> void:
 	var npc := preload("res://scenes/world/NPC.tscn").instantiate()
 	npc.position = Vector3(-8, _height(-8, -4), -4)
+	npc.name = "Elder"
 	add_child(npc)
 
 func _make_merchant() -> void:
@@ -145,7 +168,10 @@ func _make_merchant() -> void:
 		add_child(merchant)
 
 func _make_enemy() -> void:
+	if defeated_enemy_ids.has("enemy_0"):
+		return
 	var enemy := preload("res://scenes/enemies/Enemy.tscn").instantiate()
+	enemy.enemy_id = "enemy_0"
 	enemy.position = Vector3(18, _height(18, -24) + 0.05, -24)
 	add_child(enemy)
 
@@ -154,16 +180,13 @@ func _make_dungeon() -> void:
 	dungeon.position = Vector3(12, _height(12, 20) + 1.0, 20)
 	add_child(dungeon)
 
-func _make_events() -> void:
-	var manager := preload("res://scripts/world/event_manager.gd").new()
-	manager.name = "EventManager"
-	add_child(manager)
-
 func _random_ground_position() -> Vector3:
 	var x := rng.randf_range(-world_size * 0.48, world_size * 0.48)
 	var z := rng.randf_range(-world_size * 0.48, world_size * 0.48)
-	if abs(x - 25.0) < 13.0: x -= 18.0
-	if abs(x + 8.0) < 18.0 and abs(z + 10.0) < 20.0: x += 24.0
+	if abs(x - 25.0) < 10.0:
+		x -= 12.0
+	if abs(x + 8.0) < 18.0 and abs(z + 10.0) < 20.0:
+		x += 24.0
 	return Vector3(x, _height(x, z), z)
 
 func _spawn_tree(pos: Vector3) -> void:
@@ -179,6 +202,8 @@ func _spawn_tree(pos: Vector3) -> void:
 	bark.albedo_color = Color("#5b3c29")
 	trunk.material_override = bark
 	trunk.position.y = 1.75
+	trunk.visibility_range_end = 85.0
+	trunk.add_to_group("stream_optimized")
 	root.add_child(trunk)
 	var crown := MeshInstance3D.new()
 	var sphere := SphereMesh.new()
@@ -189,7 +214,8 @@ func _spawn_tree(pos: Vector3) -> void:
 	leaves.albedo_color = Color("#294f35")
 	crown.material_override = leaves
 	crown.position.y = 4.1
-	crown.scale = Vector3(1.0,1.25,1.0)
+	crown.visibility_range_end = 85.0
+	crown.add_to_group("stream_optimized")
 	root.add_child(crown)
 	add_child(root)
 
@@ -201,6 +227,8 @@ func _spawn_rock(pos: Vector3) -> void:
 	rock.mesh = mesh
 	rock.position = pos + Vector3.UP * mesh.radius * 0.45
 	rock.scale = Vector3(1.2,0.7,0.9)
+	rock.visibility_range_end = 80.0
+	rock.add_to_group("stream_optimized")
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = Color("#62655d")
 	rock.material_override = mat
@@ -218,9 +246,31 @@ func _make_ruins() -> void:
 		pillar.material_override = mat
 		add_child(pillar)
 
-func on_enemy_defeated(_enemy: Node) -> void:
+func on_enemy_defeated(enemy: Node) -> void:
 	defeated_enemies += 1
-	if rpg_system: rpg_system.register_enemy_defeat()
+	var enemy_id := str(enemy.get("enemy_id"))
+	if enemy_id != "":
+		defeated_enemy_ids[enemy_id] = true
+	if rpg_system:
+		rpg_system.register_enemy_defeat()
+
+func serialize_world_state() -> Dictionary:
+	return {
+		"defeated_enemies": defeated_enemies,
+		"defeated_enemy_ids": defeated_enemy_ids,
+		"region_streaming": region_streamer.serialize_state() if region_streamer else {},
+		"event_index": event_manager.event_index if event_manager else 0
+	}
+
+func restore_world_state(data: Dictionary) -> void:
+	defeated_enemies = int(data.get("defeated_enemies", defeated_enemies))
+	var ids = data.get("defeated_enemy_ids", {})
+	if typeof(ids) == TYPE_DICTIONARY:
+		defeated_enemy_ids = ids
+	if event_manager:
+		event_manager.event_index = int(data.get("event_index", event_manager.event_index))
+	if region_streamer:
+		region_streamer.restore_state(data.get("region_streaming", {}))
 
 func save_game() -> void:
 	var player := get_node_or_null("Player")
