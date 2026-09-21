@@ -1,48 +1,54 @@
 # ECLYRIA — Quaternius Asset Credits
 
-All assets listed below are credited for provenance. The referenced Quaternius packs are released under CC0 1.0.
+The active environment assets below come from Quaternius packs. Quaternius currently publishes these packs with CC0 terms where stated on the official pack pages.
 
-## Player character
-- File: `characters/EclyriaHero.glb`
-- Upstream pack: Universal Base Characters — Standard
+## Active environment
+
+### Nature
+- CommonTree_1.glb
+- CommonTree_2.glb
+- Bush_Common.glb
+- rock_1.glb
+- rock_2.glb
 - Creator: Quaternius
-- Official pack: https://quaternius.com/packs/universalbasecharacters.html
-- Official free download: https://quaternius.itch.io/universal-base-characters
-- License: CC0 1.0
-- Community source used for the embedded GLB: https://github.com/programasweights/avatar
-- Provenance record: https://github.com/programasweights/avatar/blob/main/ASSETS.md
+- Source family: Stylized Nature MegaKit
+- Official: https://quaternius.com/packs/stylizednaturemegakit.html
+- License: CC0
 
-## Nature
-- Files: `CommonTree_1.glb`, `CommonTree_2.glb`, `Bush_Common.glb`, `rock_1.glb`, `rock_2.glb`
+### Village
+- house_1.glb
+- house_2.glb
+- house_3.glb
+- inn.glb
+- blacksmith.glb
+- market_stand_1.glb
+- well.glb
 - Creator: Quaternius
-- Stylized Nature / nature assets
-- Official pack: https://quaternius.itch.io/stylized-nature-megakit
-- License: CC0 1.0
-- Community source for embedded GLBs: https://github.com/anshaneja5/skyline-run
-- Community credits: https://github.com/anshaneja5/skyline-run/blob/main/CREDITS.md
+- Source family: Medieval Village MegaKit
+- Official: https://quaternius.com/packs/medievalvillagemegakit.html
+- License: CC0
 
-## Village
-- Files: `house_1.glb`, `house_2.glb`, `house_3.glb`, `inn.glb`, `blacksmith.glb`, `market_stand_1.glb`, `well.glb`
+## Character sources
+
+### Universal Base Characters
 - Creator: Quaternius
-- Pack family: Medieval Village Pack / Medieval Village MegaKit
-- Official MegaKit: https://quaternius.com/packs/medievalvillagemegakit.html
-- License: CC0 1.0
-- Community source for embedded GLBs: https://github.com/ArcaneHunters/World-of-Arcane-Hunters
-- Community credits: https://github.com/ArcaneHunters/World-of-Arcane-Hunters/blob/master/CREDITS.md
+- Official: https://quaternius.com/packs/universalbasecharacters.html
+- License: CC0
+- Status in ECLYRIA: researched; skeletal GLB import currently quarantined after editor crash.
 
-## Creatures
-- Files: `Goblin.glb`, `Orc.glb`, `Demon.glb`
+### RPG Character Pack
 - Creator: Quaternius
-- Sources: https://poly.pizza/u/Quaternius and https://quaternius.com
-- License: CC0 1.0
-- Community source for embedded GLBs: https://github.com/ArcaneHunters/World-of-Arcane-Hunters
-- Community credits: https://github.com/ArcaneHunters/World-of-Arcane-Hunters/blob/master/CREDITS.md
+- Official: https://quaternius.com/packs/rpgcharacters.html
+- License: CC0
+- Status: approved future source; not imported into the active project.
 
-## Animation
-- Planned source: Universal Animation Library
-- Official: https://quaternius.com/packs/universalanimationlibrary.html
-- Free Standard repository reference: https://github.com/J-Ponzo/gltf-universal-animation-library
-- License: CC0 1.0
-- Status: source researched; animation binaries not yet embedded in ECLYRIA.
+### Bestiary - Dungeon Monsters Kit
+- Creator: Quaternius
+- Official: https://quaternius.com/packs/bestiarydungeonmonsterskit.html
+- Status: approved future source; not imported into the active project.
 
-CC0 does not require attribution, but ECLYRIA keeps this record for transparent provenance.
+## Character implementation
+
+ECLYRIA currently uses safe runtime-generated 3D humanoid and creature visuals for player, villagers, guards, merchants, goblins, orcs and demons. This provides multiple silhouettes and variants without relying on skeletal editor imports.
+
+The previous skeletal GLBs remain recoverable from Git history. They are intentionally excluded from the active Godot import scan until each asset can be validated individually in Godot 4.7.
