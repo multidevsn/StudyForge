@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/merchant.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/characters/humanoid_visual.gd" id="2"]
+[ext_resource type="PackedScene" path="res://assets/external/quaternius/static_characters/EclyriaHero_static.glb" id="2"]
 
 [sub_resource type="CapsuleShape3D" id="1"]
 radius = 0.42
@@ -14,9 +14,6 @@ script = ExtResource("1")
 position = Vector3(0, 0.85, 0)
 shape = SubResource("1")
 
-[node name="Visual" type="Node3D" parent="."]
-script = ExtResource("2")
-role = "merchant"
-skin_color = Color(0.67, 0.39, 0.28, 1)
-outfit_color = Color(0.38, 0.22, 0.12, 1)
-accent_color = Color(0.76, 0.56, 0.24, 1)
+[node name="Visual" parent="." instance=ExtResource("2")]
+position = Vector3(0, 0, 0)
+scale = Vector3(0.92, 0.92, 0.92)
