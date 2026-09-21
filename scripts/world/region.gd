@@ -71,40 +71,50 @@ func _make_props(origin: Vector3) -> void:
 		var x := rng.randf_range(-region_size * 0.45, region_size * 0.45)
 		var z := rng.randf_range(-region_size * 0.45, region_size * 0.45)
 		_spawn_tree(Vector3(origin.x + x, _height(origin.x + x, origin.z + z), origin.z + z))
+	for i in range(9):
+		var x := rng.randf_range(-region_size * 0.46, region_size * 0.46)
+		var z := rng.randf_range(-region_size * 0.46, region_size * 0.46)
+		_spawn_bush(Vector3(origin.x + x, _height(origin.x + x, origin.z + z), origin.z + z))
 	for i in range(10):
 		var x := rng.randf_range(-region_size * 0.46, region_size * 0.46)
 		var z := rng.randf_range(-region_size * 0.46, region_size * 0.46)
 		_spawn_rock(Vector3(origin.x + x, _height(origin.x + x, origin.z + z), origin.z + z))
 
 func _spawn_tree(pos: Vector3) -> void:
-	var root := Node3D.new()
-	root.position = pos
-	var trunk := MeshInstance3D.new()
-	var cyl := CylinderMesh.new()
-	cyl.top_radius = 0.25
-	cyl.bottom_radius = 0.42
-	cyl.height = 3.0
-	trunk.mesh = cyl
-	var bark := StandardMaterial3D.new()
-	bark.albedo_color = Color("#5b3c29")
-	trunk.material_override = bark
-	trunk.position.y = 1.5
-	trunk.visibility_range_end = region_size * 1.35
-	trunk.add_to_group("stream_optimized")
-	root.add_child(trunk)
-	var crown := MeshInstance3D.new()
-	var sphere := SphereMesh.new()
-	sphere.radius = 1.65
-	sphere.height = 3.3
-	crown.mesh = sphere
-	var leaves := StandardMaterial3D.new()
-	leaves.albedo_color = Color("#2e5237")
-	crown.material_override = leaves
-	crown.position.y = 3.6
-	crown.visibility_range_end = region_size * 1.35
-	crown.add_to_group("stream_optimized")
-	root.add_child(crown)
-	add_child(root)
+	var tree_paths: Array[String] = [
+		"res://assets/external/quaternius/nature/CommonTree_1.glb",
+		"res://assets/external/quaternius/nature/CommonTree_2.glb"
+	]
+	var tree_scene: PackedScene = load(tree_paths[rng.randi_range(0, tree_paths.size() - 1)])
+	if tree_scene == null:
+		return
+	var instance: Node3D = tree_scene.instantiate() as Node3D
+	if instance == null:
+		return
+	instance.position = pos
+	instance.rotation.y = rng.randf_range(-PI, PI)
+	instance.scale = Vector3.ONE * rng.randf_range(0.8, 1.15)
+	add_child(instance)
+	for node in instance.find_children("*", "VisualInstance3D", true, false):
+		if node is VisualInstance3D:
+			(node as VisualInstance3D).visibility_range_end = region_size * 1.35
+			node.add_to_group("stream_optimized")
+
+func _spawn_bush(pos: Vector3) -> void:
+	var bush_scene: PackedScene = load("res://assets/external/quaternius/nature/Bush_Common.glb")
+	if bush_scene == null:
+		return
+	var instance: Node3D = bush_scene.instantiate() as Node3D
+	if instance == null:
+		return
+	instance.position = pos
+	instance.rotation.y = rng.randf_range(-PI, PI)
+	instance.scale = Vector3.ONE * rng.randf_range(0.75, 1.2)
+	add_child(instance)
+	for node in instance.find_children("*", "VisualInstance3D", true, false):
+		if node is VisualInstance3D:
+			(node as VisualInstance3D).visibility_range_end = region_size * 1.1
+			node.add_to_group("stream_optimized")
 
 func _spawn_rock(pos: Vector3) -> void:
 	var rock := MeshInstance3D.new()
