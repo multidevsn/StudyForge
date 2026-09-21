@@ -12,7 +12,7 @@ func _process(_delta: float) -> void:
 	var rpg = get_tree().get_first_node_in_group("rpg_system")
 	var streamer = get_tree().get_first_node_in_group("region_streamer")
 	if player and rpg:
-		var speed := Vector2(player.velocity.x, player.velocity.z).length()
+		var speed: float = Vector2(player.velocity.x, player.velocity.z).length()
 		status.text = "ECLYRIA // VALLEY OF ECHOES\nHP %d/%d  STA %d/100  LV %d  XP %d/%d  OR %d\nATK %d  SPD %.1f" % [
 			player.health, player.max_health, int(player.stamina), rpg.level, rpg.xp, rpg.xp_to_next_level(), rpg.gold, player.attack_damage, speed
 		]
