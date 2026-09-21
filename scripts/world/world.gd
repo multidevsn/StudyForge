@@ -1,18 +1,20 @@
 extends Node3D
-
 @export var world_size := 140.0
 @export var terrain_resolution := 42
 @export var tree_count := 70
 @export var rock_count := 38
-
 var rng := RandomNumberGenerator.new()
 var sun: DirectionalLight3D
 var time_of_day := 8.0
 var defeated_enemies := 0
 var save_system
+var rpg_system
 
 func _ready() -> void:
 	rng.seed = 777777
+	rpg_system = preload("res://scripts/systems/rpg_system.gd").new()
+	rpg_system.name = "RPGSystem"
+	add_child(rpg_system)
 	save_system = preload("res://scripts/systems/save_system.gd").new()
 	add_child(save_system)
 	_build_world()
@@ -29,10 +31,11 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_F5:
-			save_game()
-		elif event.keycode == KEY_F9:
-			_try_load()
+		if event.keycode == KEY_F5: save_game()
+		elif event.keycode == KEY_F9: _try_load()
+		elif event.keycode == KEY_J:
+			var hud := get_tree().get_first_node_in_group("hud")
+			if hud and rpg_system: hud.show_message(rpg_system.quests_text())
 
 func _build_world() -> void:
 	_make_environment()
@@ -40,11 +43,12 @@ func _build_world() -> void:
 	_make_river()
 	_make_village()
 	_make_npc()
+	_make_merchant()
 	_make_enemy()
-	for i in range(tree_count):
-		_spawn_tree(_random_ground_position())
-	for i in range(rock_count):
-		_spawn_rock(_random_ground_position())
+	_make_dungeon()
+	_make_events()
+	for i in range(tree_count): _spawn_tree(_random_ground_position())
+	for i in range(rock_count): _spawn_rock(_random_ground_position())
 	_make_ruins()
 
 func _make_environment() -> void:
@@ -64,7 +68,6 @@ func _make_environment() -> void:
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	env_node.environment = env
 	add_child(env_node)
-
 	sun = DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-45, -35, 0)
 	sun.light_energy = 1.0
@@ -73,10 +76,7 @@ func _make_environment() -> void:
 	add_child(sun)
 
 func _height(x: float, z: float) -> float:
-	var hills := sin(x * 0.085) * 2.4 + cos(z * 0.075) * 1.9
-	var ridge := sin((x + z) * 0.045) * 1.6
-	var valley := -abs(sin((x - 12.0) * 0.035)) * 1.2
-	return hills + ridge + valley
+	return sin(x * 0.085) * 2.4 + cos(z * 0.075) * 1.9 + sin((x + z) * 0.045) * 1.6 - abs(sin((x - 12.0) * 0.035)) * 1.2
 
 func _make_terrain() -> void:
 	var body := StaticBody3D.new()
@@ -92,20 +92,16 @@ func _make_terrain() -> void:
 			var x1 := x0 + step
 			var z0 := -half + z * step
 			var z1 := z0 + step
-			var a := Vector3(x0, _height(x0, z0), z0)
-			var b := Vector3(x1, _height(x1, z0), z0)
-			var c := Vector3(x1, _height(x1, z1), z1)
-			var d := Vector3(x0, _height(x0, z1), z1)
-			for v in [a,b,c,a,c,d]:
+			for v in [Vector3(x0,_height(x0,z0),z0),Vector3(x1,_height(x1,z0),z0),Vector3(x1,_height(x1,z1),z1),Vector3(x0,_height(x0,z0),z0),Vector3(x1,_height(x1,z1),z1),Vector3(x0,_height(x0,z1),z1)]:
 				st.set_uv(Vector2(v.x / world_size, v.z / world_size))
 				st.add_vertex(v)
 				faces.append(v)
 	st.generate_normals()
 	var mesh := st.commit()
-	var material := StandardMaterial3D.new()
-	material.albedo_color = Color("#4f6945")
-	material.roughness = 1.0
-	mesh.surface_set_material(0, material)
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color("#4f6945")
+	mat.roughness = 1.0
+	mesh.surface_set_material(0, mat)
 	var visual := MeshInstance3D.new()
 	visual.mesh = mesh
 	body.add_child(visual)
@@ -126,7 +122,6 @@ func _make_river() -> void:
 	mesh.rotation_degrees.y = 12
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = Color("#2c7290")
-	mat.metallic = 0.08
 	mat.roughness = 0.16
 	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	mat.albedo_color.a = 0.84
@@ -143,18 +138,31 @@ func _make_npc() -> void:
 	npc.position = Vector3(-8, _height(-8, -4), -4)
 	add_child(npc)
 
+func _make_merchant() -> void:
+	var merchant := preload("res://scenes/world/Merchant.tscn").instantiate()
+	merchant.position = Vector3(-4, _height(-4, -2), -2)
+	add_child(merchant)
+
 func _make_enemy() -> void:
 	var enemy := preload("res://scenes/enemies/Enemy.tscn").instantiate()
 	enemy.position = Vector3(18, _height(18, -24) + 0.05, -24)
 	add_child(enemy)
 
+func _make_dungeon() -> void:
+	var dungeon := preload("res://scenes/world/Dungeon.tscn").instantiate()
+	dungeon.position = Vector3(12, _height(12, 20) + 1.0, 20)
+	add_child(dungeon)
+
+func _make_events() -> void:
+	var manager := preload("res://scripts/world/event_manager.gd").new()
+	manager.name = "EventManager"
+	add_child(manager)
+
 func _random_ground_position() -> Vector3:
 	var x := rng.randf_range(-world_size * 0.48, world_size * 0.48)
 	var z := rng.randf_range(-world_size * 0.48, world_size * 0.48)
-	if abs(x - 25.0) < 13.0:
-		x -= 18.0
-	if abs(x + 8.0) < 18.0 and abs(z + 10.0) < 20.0:
-		x += 24.0
+	if abs(x - 25.0) < 13.0: x -= 18.0
+	if abs(x + 8.0) < 18.0 and abs(z + 10.0) < 20.0: x += 24.0
 	return Vector3(x, _height(x, z), z)
 
 func _spawn_tree(pos: Vector3) -> void:
@@ -178,54 +186,49 @@ func _spawn_tree(pos: Vector3) -> void:
 	crown.mesh = sphere
 	var leaves := StandardMaterial3D.new()
 	leaves.albedo_color = Color("#294f35")
-	leaves.roughness = 1.0
 	crown.material_override = leaves
 	crown.position.y = 4.1
-	crown.scale = Vector3(1.0, 1.25, 1.0)
+	crown.scale = Vector3(1.0,1.25,1.0)
 	root.add_child(crown)
 	add_child(root)
 
 func _spawn_rock(pos: Vector3) -> void:
 	var rock := MeshInstance3D.new()
 	var mesh := SphereMesh.new()
-	mesh.radius = rng.randf_range(0.5, 1.5)
+	mesh.radius = rng.randf_range(0.5,1.5)
 	mesh.height = mesh.radius * 1.4
 	rock.mesh = mesh
 	rock.position = pos + Vector3.UP * mesh.radius * 0.45
-	rock.rotation = Vector3(rng.randf(), rng.randf(), rng.randf())
-	rock.scale = Vector3(1.2, 0.7, 0.9)
+	rock.scale = Vector3(1.2,0.7,0.9)
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = Color("#62655d")
-	mat.roughness = 1.0
 	rock.material_override = mat
 	add_child(rock)
 
 func _make_ruins() -> void:
-	for p in [Vector3(-30, _height(-30,-25), -25), Vector3(-34, _height(-34,-25), -25), Vector3(-32, _height(-32,-29), -29)]:
+	for p in [Vector3(-30,_height(-30,-25),-25),Vector3(-34,_height(-34,-25),-25),Vector3(-32,_height(-32,-29),-29)]:
 		var pillar := MeshInstance3D.new()
 		var box := BoxMesh.new()
-		box.size = Vector3(1.4, 4.5, 1.4)
+		box.size = Vector3(1.4,4.5,1.4)
 		pillar.mesh = box
 		pillar.position = p + Vector3.UP * 2.25
 		var mat := StandardMaterial3D.new()
 		mat.albedo_color = Color("#726b61")
-		mat.roughness = 0.95
 		pillar.material_override = mat
 		add_child(pillar)
 
 func on_enemy_defeated(_enemy: Node) -> void:
 	defeated_enemies += 1
+	if rpg_system: rpg_system.register_enemy_defeat()
 
 func save_game() -> void:
 	var player := get_node_or_null("Player")
 	if player and save_system.save_game(player, self):
 		var hud := get_node_or_null("HUD")
-		if hud and hud.has_method("show_message"):
-			hud.show_message("Partie sauvegardée.")
+		if hud and hud.has_method("show_message"): hud.show_message("Partie sauvegardée.")
 
 func _try_load() -> void:
 	var player := get_node_or_null("Player")
 	if player and save_system.load_game(player, self):
 		var hud := get_node_or_null("HUD")
-		if hud and hud.has_method("show_message"):
-			hud.show_message("Sauvegarde chargée.")
+		if hud and hud.has_method("show_message"): hud.show_message("Sauvegarde chargée.")
