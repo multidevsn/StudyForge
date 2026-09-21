@@ -1,19 +1,27 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/enemies/boss.gd" id="1"]
-[ext_resource type="PackedScene" path="res://assets/external/quaternius/monsters/Demon.glb" id="2"]
 
 [sub_resource type="CapsuleShape3D" id="1"]
 radius = 0.8
-height = 2.8
+height = 2.6
+
+[sub_resource type="CapsuleMesh" id="2"]
+radius = 0.8
+height = 2.6
+
+[sub_resource type="StandardMaterial3D" id="3"]
+albedo_color = Color(0.12, 0.03, 0.18, 1)
+roughness = 0.7
 
 [node name="Boss" type="CharacterBody3D"]
 script = ExtResource("1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-position = Vector3(0, 1.4, 0)
+position = Vector3(0, 1.3, 0)
 shape = SubResource("1")
 
-[node name="Visual" parent="." instance=ExtResource("2")]
-position = Vector3(0, 0, 0)
-scale = Vector3(1.8, 1.8, 1.8)
+[node name="Visual" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.3, 0)
+mesh = SubResource("2")
+material_override = SubResource("3")
