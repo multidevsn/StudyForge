@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-@onready var player: CharacterBody3D = get_parent().get_node("Player")
+@onready var player: CharacterBody3D = get_parent().get_node("Player") as CharacterBody3D
 @onready var status: Label = $Margin/VBox/Status
 @onready var message: Label = $Margin/VBox/Message
 @onready var region_label: Label = $Region
@@ -10,7 +10,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	var rpg := get_tree().get_first_node_in_group("rpg_system")
-	var streamer := get_tree().get_first_node_in_group("region_streamer")
+	var streamer: Node3D = get_tree().get_first_node_in_group("region_streamer") as Node3D
 	if player and rpg:
 		var speed := Vector2(player.velocity.x, player.velocity.z).length()
 		status.text = "ECLYRIA // VALLEY OF ECHOES\nHP %d/%d  STA %d/100  LV %d  XP %d/%d  OR %d\nATK %d  SPD %.1f" % [
