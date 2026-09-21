@@ -78,10 +78,10 @@ func attack() -> void:
 	var audio := get_tree().get_first_node_in_group("audio_manager")
 	if audio:
 		audio.play_sfx("attack")
-	for enemy in get_tree().get_nodes_in_group("enemies"):
+	for enemy: Node3D in get_tree().get_nodes_in_group("enemies"):
 		if not is_instance_valid(enemy):
 			continue
-		var to_enemy := enemy.global_position - global_position
+		var to_enemy: Vector3 = enemy.global_position - global_position
 		var flat := Vector3(to_enemy.x, 0.0, to_enemy.z)
 		if flat.length() <= attack_range:
 			var forward := -global_transform.basis.z
