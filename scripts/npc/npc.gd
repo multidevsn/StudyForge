@@ -8,7 +8,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	cooldown = max(cooldown - delta, 0.0)
-	var player := get_tree().get_first_node_in_group("player")
+	var player: Node3D = get_tree().get_first_node_in_group("player") as Node3D
 	if player == null or cooldown > 0.0: return
 	if global_position.distance_to(player.global_position) <= 3.0 and Input.is_key_pressed(KEY_E):
 		cooldown = 0.7
