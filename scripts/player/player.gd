@@ -12,6 +12,7 @@ extends CharacterBody3D
 
 @onready var pivot: Node3D = $CameraPivot
 @onready var visual: MeshInstance3D = $Visual
+@onready var animation_controller: Node = $AnimationController
 
 var camera_pitch := -0.18
 var attacking := false
@@ -66,6 +67,8 @@ func _physics_process(delta: float) -> void:
 	else:
 		visual.scale = Vector3.ONE
 	move_and_slide()
+	if animation_controller and animation_controller.has_method("update_state"):
+		animation_controller.update_state(Vector2(velocity.x, velocity.z).length(), is_on_floor(), sprinting, attacking)
 
 func attack() -> void:
 	if attacking:
