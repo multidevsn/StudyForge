@@ -4,21 +4,67 @@
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1")
+layer = 10
 
 [node name="Margin" type="MarginContainer" parent="."]
-offset_left = 24.0
-offset_top = 24.0
-offset_right = 720.0
-offset_bottom = 205.0
+offset_left = 20.0
+offset_top = 18.0
+offset_right = 820.0
+offset_bottom = 176.0
 
 [node name="VBox" type="VBoxContainer" parent="Margin"]
 
 [node name="Status" type="Label" parent="Margin/VBox"]
-text = "ECLYRIA  //  VALLEY OF ECHOES\nHP  100 / 100     STAMINA  100 / 100\nSPD  0.0     LEVEL  1\nWASD Move | SHIFT Sprint | SPACE Jump | LMB Attack | E Talk | F5 Save | F9 Load"
+text = "ECLYRIA // VALLEY OF ECHOES"
 theme_override_colors/font_color = Color(0.88, 0.94, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.75)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 16
 
 [node name="Message" type="Label" parent="Margin/VBox"]
 text = ""
+autowrap_mode = 2
 theme_override_colors/font_color = Color(1, 0.86, 0.52, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 18
+
+[node name="Region" type="Label" parent="."]
+offset_left = 925.0
+offset_top = 22.0
+offset_right = 1260.0
+offset_bottom = 58.0
+horizontal_alignment = 2
+theme_override_colors/font_color = Color(0.75, 0.9, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 15
+
+[node name="Crosshair" type="Label" parent="."]
+offset_left = 628.0
+offset_top = 344.0
+offset_right = 652.0
+offset_bottom = 374.0
+text = "+"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.85)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 22
+
+[node name="Footer" type="Label" parent="."]
+offset_left = 24.0
+offset_top = 676.0
+offset_right = 1256.0
+offset_bottom = 708.0
+text = "I Inventaire  •  K Compétences  •  J Quêtes  •  U Équiper  •  F5 Sauvegarder  •  F9 Charger"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.7, 0.76, 0.82, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 13
