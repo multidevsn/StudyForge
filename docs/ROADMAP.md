@@ -44,7 +44,7 @@
 - [x] HUD finalisé / crosshair / indicateur de région
 - [x] Projet aligné sur Godot 4.7 + GL Compatibility
 
-## V1.1 — Monde vivant + refonte artistique (en cours)
+## V1.1 — Monde vivant + refonte artistique (production pass)
 ### Environnement
 - [x] Maisons et bâtiments Quaternius réels
 - [x] Arbres, buissons et rochers Quaternius réels
@@ -52,8 +52,8 @@
 - [x] Lampadaires, charrettes, tonneaux, caisses, clôtures, feux
 - [x] Vallée densifiée
 - [x] Rivière avec matériau animé
-- [ ] Herbe/fleurs/champignons supplémentaires
-- [ ] Décors de donjon modulaire
+- [x] Herbe réelle et buissons fleuris Quaternius
+- [x] Donjon modulaire en vrais assets Quaternius
 
 ### Personnages
 - [x] Joueur en personnage 3D modulaire
@@ -67,7 +67,8 @@
 - [ ] Retarget Universal Animation Library 2
 
 ### Production
-- [ ] Armes et armures visibles
+- [x] Armes et armures visibles via vrais props Quaternius
+- [x] Personnages et ennemis basés sur vrais meshes Quaternius statiques
 - [ ] PBR terrain/bois/pierre
 - [ ] VFX combat et impacts
 - [ ] Navigation avancée
