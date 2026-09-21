@@ -11,11 +11,17 @@ var health := 60
 var attack_cooldown := 0.0
 var spawn_position := Vector3.ZERO
 var target: Node3D
+var animation_player: AnimationPlayer
 
 func _ready() -> void:
 	add_to_group("enemies")
 	health = max_health
 	spawn_position = global_position
+	var visual: Node = get_node_or_null("Visual")
+	if visual:
+		var players := visual.find_children("*", "AnimationPlayer", true, false)
+		if not players.is_empty():
+			animation_player = players[0] as AnimationPlayer
 
 func _physics_process(delta: float) -> void:
 	attack_cooldown = max(attack_cooldown - delta, 0.0)
@@ -23,8 +29,9 @@ func _physics_process(delta: float) -> void:
 		target = get_tree().get_first_node_in_group("player")
 	if target == null:
 		return
-	var distance := global_position.distance_to(target.global_position)
+	var distance: float = global_position.distance_to(target.global_position)
 	if distance <= attack_range:
+		_play_animation(["2H_Melee_Attack_Chop", "attack", "attack_1"])
 		velocity = Vector3.ZERO
 		look_at(Vector3(target.global_position.x, global_position.y, target.global_position.z), Vector3.UP)
 		if attack_cooldown <= 0.0:
@@ -32,13 +39,24 @@ func _physics_process(delta: float) -> void:
 			if target.has_method("take_damage"):
 				target.take_damage(attack_damage)
 	elif distance <= detection_range:
-		var direction := global_position.direction_to(target.global_position)
+		_play_animation(["Running_A", "run", "walk"])
+		var direction: Vector3 = global_position.direction_to(target.global_position)
 		direction.y = 0.0
 		velocity = direction.normalized() * move_speed
 		look_at(global_position + Vector3(direction.x, 0, direction.z), Vector3.UP)
 		move_and_slide()
 	else:
+		_play_animation(["Idle", "idle"])
 		velocity = Vector3.ZERO
+
+func _play_animation(names: Array[String]) -> void:
+	if animation_player == null:
+		return
+	for name in names:
+		if animation_player.has_animation(name):
+			if animation_player.current_animation != name:
+				animation_player.play(name)
+			return
 
 func take_damage(amount: int) -> void:
 	health = max(health - amount, 0)
@@ -56,6 +74,7 @@ func flash_hit() -> void:
 		)
 
 func _die() -> void:
+	_play_animation(["Death_A", "death", "die"])
 	var audio := get_tree().get_first_node_in_group("audio_manager")
 	if audio: audio.play_sfx("hit")
 	var world := get_parent()
