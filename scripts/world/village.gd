@@ -18,13 +18,15 @@ func _build_village() -> void:
 	for z in [-18.0, -10.0, -2.0, 6.0, 14.0]:
 		_make_box(Vector3(30, 0.08, 2.8), Vector3(-8, 0.05, z), road_mat)
 
+	if house_scenes.is_empty():
+		return
 	var positions := [
 		Vector3(-22, 0, -18),
 		Vector3(-22, 0, 4),
 		Vector3(6, 0, -18)
 	]
 	for i in range(positions.size()):
-		_make_real_building(positions[i], house_scenes[i % max(house_scenes.size(), 1)])
+		_make_real_building(positions[i], house_scenes[i % house_scenes.size()])
 
 	_make_real_building(Vector3(6, 0, 4), load("res://assets/external/quaternius/village/inn.glb"))
 	_make_real_building(Vector3(-8, 0, 18), load("res://assets/external/quaternius/village/blacksmith.glb"))
