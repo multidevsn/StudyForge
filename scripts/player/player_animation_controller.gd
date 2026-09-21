@@ -17,6 +17,8 @@ func _ready() -> void:
 		animation_player = get_node_or_null(animation_player_path) as AnimationPlayer
 	if animation_player == null:
 		var owner_model: Node = get_parent().get_node_or_null("CharacterModel")
+		if owner_model == null:
+			owner_model = get_parent().get_node_or_null("Visual")
 		if owner_model:
 			var players := owner_model.find_children("*", "AnimationPlayer", true, false)
 			if not players.is_empty():
