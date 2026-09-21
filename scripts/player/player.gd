@@ -11,7 +11,7 @@ extends CharacterBody3D
 @export var attack_range := 3.0
 
 @onready var pivot: Node3D = $CameraPivot
-@onready var visual: MeshInstance3D = $Visual
+@onready var visual: Node3D = $CharacterModel
 @onready var animation_controller: Node = $AnimationController
 
 var camera_pitch := -0.18
