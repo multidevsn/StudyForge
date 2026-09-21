@@ -24,7 +24,7 @@ func _process(_delta: float) -> void:
 		if status == ResourceLoader.THREAD_LOAD_LOADED:
 			region_scene = ResourceLoader.load_threaded_get("res://scenes/world/Region.tscn")
 			loading_started = true
-			var player := get_tree().get_first_node_in_group("player")
+			var player: Node3D = get_tree().get_first_node_in_group("player") as Node3D
 			current_coord = world_to_region(player.global_position) if player else Vector2i.ZERO
 			_sync_regions()
 		elif status == ResourceLoader.THREAD_LOAD_FAILED:
@@ -33,7 +33,7 @@ func _process(_delta: float) -> void:
 			return
 	if not loading_started or region_scene == null:
 		return
-	var player := get_tree().get_first_node_in_group("player")
+	var player: Node3D = get_tree().get_first_node_in_group("player") as Node3D
 	if player == null:
 		return
 	var next_coord := world_to_region(player.global_position)
@@ -65,7 +65,9 @@ func _sync_regions() -> void:
 	streaming_status.emit("Monde ouvert : streaming actif.")
 
 func _load_region(c: Vector2i) -> void:
-	var region := region_scene.instantiate()
+	var region: Node3D = region_scene.instantiate() as Node3D
+	if region == null:
+		return
 	region.name = "Region_%d_%d" % [c.x, c.y]
 	add_child(region)
 	region.setup(c, region_size, world_seed)
