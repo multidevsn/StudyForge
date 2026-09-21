@@ -13,7 +13,7 @@ func _process(delta: float) -> void:
 	if last_frame_check < 2.0:
 		return
 	last_frame_check = 0.0
-	var player := get_tree().get_first_node_in_group("player")
+	var player: Node3D = get_tree().get_first_node_in_group("player") as Node3D
 	if player == null:
 		return
 	for node: Node3D in get_tree().get_nodes_in_group("stream_optimized"):
