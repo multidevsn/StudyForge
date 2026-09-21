@@ -97,7 +97,7 @@ func _build() -> void:
 		var hood: SphereMesh = SphereMesh.new()
 		hood.radius = 0.31
 		hood.height = 0.38
-		_add_mesh(body, hood, Vector3(0.0, 2.04, 0.0), Vector3.ONE, outfit_color)
+		_add_mesh(body, hood, Vector3(0.0, 2.04, 0.0), Vector3.ONE, cloth)
 
 	elif role == "elder":
 		var staff: CylinderMesh = CylinderMesh.new()
