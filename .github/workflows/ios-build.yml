@@ -1,0 +1,47 @@
+name: iOS Build & Tests
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  core-tests:
+    name: Core tests
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run Swift package tests
+        run: swift test --package-path Core
+
+  ios-simulator-build:
+    name: Build iOS Simulator app
+    runs-on: macos-15
+    needs: core-tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          xcrun simctl list runtimes
+      - name: Build unsigned Simulator app
+        run: |
+          set -o pipefail
+          xcodebuild             -project StudyForge.xcodeproj             -scheme StudyForge             -configuration Debug             -sdk iphonesimulator             -destination 'generic/platform=iOS Simulator'             -derivedDataPath build             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build | tee xcodebuild.log
+      - name: Package Simulator app
+        run: |
+          mkdir -p artifacts
+          ditto -c -k --sequesterRsrc --keepParent             'build/Build/Products/Debug-iphonesimulator/StudyForge.app'             'artifacts/StudyForge-Simulator.app.zip'
+          cp xcodebuild.log artifacts/xcodebuild.log
+      - name: Upload Simulator artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: StudyForge-iOS-Simulator
+          path: artifacts/
+          retention-days: 14
