@@ -1,40 +1,51 @@
-# ECLYRIA V0.2 — External Assets
+# ECLYRIA — Production Asset Library
 
-The V0.1 prototype remains asset-independent. This folder is the controlled entry point for production assets.
+This directory contains only production assets explicitly selected for ECLYRIA. No legacy StudyForge learning-app assets are reused.
 
-## Approved sources
+## Imported real assets
 
-### Quaternius
-- Universal Base Characters: https://quaternius.com/packs/universalbasecharacters.html
-- Universal Animation Library: https://quaternius.com/packs/universalanimationlibrary.html
-- Universal Animation Library 2: https://quaternius.com/packs/universalanimationlibrary2.html
-- Medieval Village MegaKit: https://quaternius.com/packs/medievalvillagemegakit.html
-- Stylized Nature MegaKit: https://quaternius.com/
-- Fantasy Props MegaKit: https://quaternius.com/
+### Quaternius — characters
+- `characters/EclyriaHero.glb` — Universal Base Characters, Superhero Male derivative.
+- Used by the player, elder NPC and merchants.
+- CC0 1.0 provenance documented in `QUATERNIUS_CREDITS.md`.
 
-All selected Quaternius packs above are CC0 and provide glTF/FBX/other formats; the character and animation packs are designed for humanoid retargeting and Godot workflows.
+### Quaternius — village
+- `village/house_1.glb`
+- `village/house_2.glb`
+- `village/house_3.glb`
+- `village/inn.glb`
+- `village/blacksmith.glb`
+- `village/market_stand_1.glb`
+- `village/well.glb`
+- Used by the playable village.
 
-### Poly Haven
-- Library: https://polyhaven.com/
-- License: https://polyhaven.com/license
+### Quaternius — nature
+- `nature/CommonTree_1.glb`
+- `nature/CommonTree_2.glb`
+- `nature/Bush_Common.glb`
+- `nature/rock_1.glb`
+- `nature/rock_2.glb`
+- Used by both the central zone and streamed regions.
 
-Poly Haven assets are CC0. Use it for selected PBR materials, rocks, props and HDRIs.
+### Quaternius — creatures
+- `monsters/Goblin.glb`
+- `monsters/Orc.glb`
+- `monsters/Demon.glb`
+- Goblin is the current first enemy; Demon is the current dungeon boss visual. Orc is reserved for enemy variants.
 
-## Import policy
+## Approved sources still planned
+- Universal Animation Library + Library 2
+- Fantasy Props MegaKit
+- Additional Stylized Nature MegaKit assets
+- Selected Poly Haven PBR/HDRI assets
 
-1. Do not copy anything from the old StudyForge project.
-2. Keep external assets under assets/external/<source>/.
-3. Prefer glTF/GLB for Godot.
-4. Keep original source filenames where practical.
-5. Record the exact source URL and license for every imported pack.
-6. Optimize textures and meshes for the GL Compatibility renderer.
-7. Do not commit generated import caches.
+## Import rules
+1. Never reuse old StudyForge assets.
+2. Keep third-party media inside `assets/external/quaternius/` or `assets/external/polyhaven/`.
+3. Record source URL, creator, license and any conversion/optimization.
+4. Prefer GLB/glTF for Godot 4.x.
+5. Do not commit Godot-generated `.import` caches.
+6. Keep collisions as dedicated gameplay components where the source model collision is not reliable.
 
-## V0.2 target asset set
-
-- Player: Universal Base Character
-- Player locomotion/combat: Universal Animation Library + Library 2
-- Village: Medieval Village MegaKit
-- Nature: Stylized Nature MegaKit
-- Props: Fantasy Props MegaKit
-- Selected PBR/HDRI: Poly Haven
+## Performance target
+ECLYRIA remains on Godot's GL Compatibility renderer. Imported meshes are subject to visibility ranges and streamed-region culling.
