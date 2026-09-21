@@ -101,10 +101,10 @@ func _update_player() -> void:
 	var player = get_tree().get_first_node_in_group("player")
 	if player == null:
 		return
-	player.max_health = 100 + skills["vitality"] * 15
-	player.attack_damage = 25 + skills["power"] * 5
-	player.walk_speed = 5.5 + skills["agility"] * 0.35
-	player.sprint_speed = 9.0 + skills["agility"] * 0.45
+	player.max_health = 100 + int(skills["vitality"]) * 15
+	player.attack_damage = 25 + int(skills["power"]) * 5
+	player.walk_speed = 5.5 + int(skills["agility"]) * 0.35
+	player.sprint_speed = 9.0 + int(skills["agility"]) * 0.45
 	if player.health > player.max_health:
 		player.health = player.max_health
 
