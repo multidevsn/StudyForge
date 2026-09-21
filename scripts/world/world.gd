@@ -229,19 +229,24 @@ func _spawn_bush(pos: Vector3) -> void:
 			node.add_to_group("stream_optimized")
 
 func _spawn_rock(pos: Vector3) -> void:
-	var rock := MeshInstance3D.new()
-	var mesh := SphereMesh.new()
-	mesh.radius = rng.randf_range(0.5,1.5)
-	mesh.height = mesh.radius * 1.4
-	rock.mesh = mesh
-	rock.position = pos + Vector3.UP * mesh.radius * 0.45
-	rock.scale = Vector3(1.2,0.7,0.9)
-	rock.visibility_range_end = 80.0
-	rock.add_to_group("stream_optimized")
-	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color("#62655d")
-	rock.material_override = mat
-	add_child(rock)
+	var rock_paths: Array[String] = [
+		"res://assets/external/quaternius/nature/rock_1.glb",
+		"res://assets/external/quaternius/nature/rock_2.glb"
+	]
+	var rock_scene: PackedScene = load(rock_paths[rng.randi_range(0, rock_paths.size() - 1)])
+	if rock_scene == null:
+		return
+	var instance: Node3D = rock_scene.instantiate() as Node3D
+	if instance == null:
+		return
+	instance.position = pos
+	instance.rotation = Vector3(0.0, rng.randf_range(-PI, PI), 0.0)
+	instance.scale = Vector3.ONE * rng.randf_range(0.7, 1.25)
+	add_child(instance)
+	for node in instance.find_children("*", "VisualInstance3D", true, false):
+		if node is VisualInstance3D:
+			(node as VisualInstance3D).visibility_range_end = 80.0
+			node.add_to_group("stream_optimized")
 
 func _make_ruins() -> void:
 	for p in [Vector3(-30,_height(-30,-25),-25),Vector3(-34,_height(-34,-25),-25),Vector3(-32,_height(-32,-29),-29)]:
