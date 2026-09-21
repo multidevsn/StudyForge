@@ -1,11 +1,18 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/merchant.gd" id="1"]
-[ext_resource type="PackedScene" path="res://assets/external/quaternius/characters/EclyriaHero.glb" id="2"]
 
 [sub_resource type="CapsuleShape3D" id="1"]
 radius = 0.42
 height = 1.7
+
+[sub_resource type="CapsuleMesh" id="2"]
+radius = 0.42
+height = 1.7
+
+[sub_resource type="StandardMaterial3D" id="3"]
+albedo_color = Color(0.68, 0.42, 0.12, 1)
+roughness = 0.8
 
 [node name="Merchant" type="StaticBody3D"]
 script = ExtResource("1")
@@ -14,6 +21,7 @@ script = ExtResource("1")
 position = Vector3(0, 0.85, 0)
 shape = SubResource("1")
 
-[node name="Visual" parent="." instance=ExtResource("2")]
-position = Vector3(0, 0, 0)
-scale = Vector3(0.92, 0.92, 0.92)
+[node name="Visual" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.85, 0)
+mesh = SubResource("2")
+material_override = SubResource("3")
