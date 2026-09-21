@@ -73,3 +73,27 @@
 - Les assets 3D Quaternius/Poly Haven restent une étape d'intégration séparée : aucun ancien asset StudyForge n'est réutilisé.
 - Le streaming porte actuellement sur les régions de décor/terrain procédurales; les gros contenus narratifs restent dans la région centrale.
 - Le runtime FPS/compatibilité matériel n'a pas été exécuté dans cet environnement.
+
+
+## V1.1 — Professional asset rebuild (in progress)
+### Integrated
+- [x] Real Quaternius humanoid GLB for player
+- [x] Real Quaternius humanoid GLB for elder/merchant visuals
+- [x] Real Quaternius trees and bushes
+- [x] Real Quaternius rocks
+- [x] Real Quaternius village houses
+- [x] Real Quaternius inn / blacksmith / market / well
+- [x] Real Quaternius Goblin enemy
+- [x] Real Quaternius Demon boss
+- [x] Real Quaternius Orc reserved for enemy variants
+- [x] Asset provenance ledger
+
+### Remaining production pass
+- [ ] Embed and retarget Universal Animation Library Standard/2 to the humanoid
+- [ ] Add weapon/armor models from Fantasy Props / RPG packs
+- [ ] Add PBR terrain/stone/wood materials from Poly Haven
+- [ ] Add grass/flowers/mushrooms and biome-specific nature variation
+- [ ] Replace remaining procedural water with authored water material/VFX
+- [ ] Final combat VFX/SFX pass
+- [ ] LOD/impostor pass for large forests
+- [ ] Runtime profiling and hardware matrix
