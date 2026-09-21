@@ -68,7 +68,7 @@ func take_damage(amount: int) -> void:
 		_die()
 
 func flash_hit() -> void:
-	var visual := get_node_or_null("Visual")
+	var visual: Node3D = get_node_or_null("Visual") as Node3D
 	if visual:
 		visual.scale = Vector3.ONE * 1.12
 		get_tree().create_timer(0.08).timeout.connect(func():
