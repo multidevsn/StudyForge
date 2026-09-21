@@ -12,10 +12,11 @@ func _ready() -> void:
 	_make_barrels_and_crates()
 	_make_campfires()
 
-func _mat(hex: String) -> StandardMaterial3D:
+func _mat(hex: String, roughness := 0.9, metallic := 0.0) -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
 	m.albedo_color = Color(hex)
-	m.roughness = 0.9
+	m.roughness = roughness
+	m.metallic = metallic
 	return m
 
 func _box(size: Vector3, pos: Vector3, material: Material, parent: Node3D = self) -> void:
