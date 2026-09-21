@@ -160,32 +160,32 @@ func _make_river() -> void:
 	add_child(mesh)
 
 func _make_village() -> void:
-	var village := preload("res://scenes/world/Village.tscn").instantiate()
+	var village: Node3D = preload("res://scenes/world/Village.tscn").instantiate() as Node3D
 	village.position = Vector3(-8, _height(-8, -10), -10)
 	add_child(village)
 
 func _make_npc() -> void:
-	var npc := preload("res://scenes/world/NPC.tscn").instantiate()
+	var npc: Node3D = preload("res://scenes/world/NPC.tscn").instantiate() as Node3D
 	npc.position = Vector3(-8, _height(-8, -4), -4)
 	npc.name = "Elder"
 	add_child(npc)
 
 func _make_merchant() -> void:
 	for p in [Vector3(-4, _height(-4, -2), -2), Vector3(-12, _height(-12, -1), -1)]:
-		var merchant := preload("res://scenes/world/Merchant.tscn").instantiate()
+		var merchant: Node3D = preload("res://scenes/world/Merchant.tscn").instantiate() as Node3D
 		merchant.position = p
 		add_child(merchant)
 
 func _make_enemy() -> void:
 	if defeated_enemy_ids.has("enemy_0"):
 		return
-	var enemy := preload("res://scenes/enemies/Enemy.tscn").instantiate()
+	var enemy: CharacterBody3D = preload("res://scenes/enemies/Enemy.tscn").instantiate() as CharacterBody3D
 	enemy.enemy_id = "enemy_0"
 	enemy.position = Vector3(18, _height(18, -24) + 0.05, -24)
 	add_child(enemy)
 
 func _make_dungeon() -> void:
-	var dungeon := preload("res://scenes/world/Dungeon.tscn").instantiate()
+	var dungeon: Node3D = preload("res://scenes/world/Dungeon.tscn").instantiate() as Node3D
 	dungeon.position = Vector3(12, _height(12, 20) + 1.0, 20)
 	add_child(dungeon)
 
