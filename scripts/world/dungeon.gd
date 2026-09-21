@@ -16,7 +16,7 @@ func _process(_delta: float) -> void:
 
 func _enter(player: Node3D) -> void:
 	active = true
-	player.global_position = dungeon_origin + Vector3(0, 0, 6)
+	player.global_position = to_global(dungeon_origin + Vector3(0, 0, 6))
 	_make_dungeon()
 	var hud := get_tree().get_first_node_in_group("hud")
 	if hud: hud.show_message("DONJON — Sanctuaire des Ombres. Trouve le gardien.")
