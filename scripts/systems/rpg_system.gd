@@ -118,7 +118,9 @@ func register_enemy_defeat() -> void:
 		var roll := randi() % 100
 		if roll < 55: add_item("potion", 1)
 		elif roll < 75: add_item("iron_sword", 1)
-		else: add_item("ancient_relic", 1)
+		else:
+			add_item("ancient_relic", 1)
+			register_event("collect", "ancient_relic", 1)
 
 func start_quest(id: String) -> void:
 	if not quests.has(id): return
@@ -141,6 +143,7 @@ func _progress_quest(id: String, amount: int) -> void:
 		gold += int(quests[id]["reward_gold"])
 		var hud := get_tree().get_first_node_in_group("hud")
 		if hud: hud.show_message("Quête terminée : %s (+%d XP, +%d or)." % [quests[id]["title"], quests[id]["reward_xp"], quests[id]["reward_gold"]])
+		if id == "first_blood": start_quest("lost_relic")
 	quest_changed.emit()
 
 func buy(item_id: String, price: int) -> bool:
